@@ -19,12 +19,13 @@ require_once(__DIR__ . '/locallib.php');
 
 global $DB;
 
-$id = required_param('id', PARAM_INT);
-$delete = optional_param('delete', false, PARAM_BOOL);
+$id        = required_param('id', PARAM_INT);
+$delete    = optional_param('delete', false, PARAM_BOOL);
 $returnurl = optional_param('returnurl', '', PARAM_LOCALURL);
 
 require_login();
 require_sesskey();
+require_capability('local/vxg_dashboard:managedashboard', context_system::instance());
 
 $heading = get_string('delete', 'local_vxg_dashboard');
 $PAGE->set_context(context_system::instance());
@@ -32,19 +33,19 @@ $PAGE->set_title($heading);
 $PAGE->set_heading($heading);
 $PAGE->set_url('/local/vxg_dashboard/delete.php', array('id' => $id));
 $PAGE->set_pagelayout('incourse');
-$PAGE->navbar->add(get_string('manage', 'local_vxg_dashboard'),'/local/vxg_users/index.php');
+$PAGE->navbar->add(get_string('manage', 'local_vxg_dashboard'), '/local/vxg_users/index.php');
 
-$dashboard = $DB->get_record('vxg_dashboard', array('id' => $id));
+$dashboard   = $DB->get_record('local_vxg_dashboard', array('id' => $id));
 $redirecturl = new moodle_url('/local/vxg_dashboard/manage.php', array('returnurl' => $returnurl));
 
-if($delete){
-    $DB->delete_records('vxg_dashboard', array('id' => $id));
-    delete_dashboard_blocks($id);
+if ($delete) {
+    $DB->delete_records('local_vxg_dashboard', array('id' => $id));
+    local_vxg_dashboard_delete_dashboard_blocks($id);
     redirect($redirecturl);
 }
 
 echo $OUTPUT->header();
-echo $OUTPUT->confirm(get_string('delete_confirm', 'local_vxg_dashboard', $dashboard->dashboard_name), 
-            new moodle_url('/local/vxg_dashboard/delete.php', array('id' => $id, 'delete' => true, 'sesskey' => sesskey())), 
-            new moodle_url('/local/vxg_dashboard/manage.php', array('returnurl' => $returnurl)));
+echo $OUTPUT->confirm(get_string('delete_confirm', 'local_vxg_dashboard', $dashboard->dashboard_name),
+    new moodle_url('/local/vxg_dashboard/delete.php', array('id' => $id, 'delete' => true, 'sesskey' => sesskey())),
+    new moodle_url('/local/vxg_dashboard/manage.php', array('returnurl' => $returnurl)));
 echo $OUTPUT->footer();

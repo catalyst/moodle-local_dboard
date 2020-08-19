@@ -16,10 +16,12 @@
 
 defined('MOODLE_INTERNAL') || die;
 
-$string['pluginname'] = 'Dashboard';
-$string['dashboard']  = 'Veloxnet Dashboard';
-$string['name']       = 'Name';
-$string['icon']       = 'Icon';
+$string['pluginname']                    = 'Dashboard';
+$string['vxg_dashboard:managedashboard'] = 'Manage dashboard';
+$string['privacy:metadata']              = 'The Dashboard plugin does not store any personal data.';
+$string['dashboard']                     = 'Veloxnet dashboard';
+$string['name']                          = 'Name';
+$string['icon']                          = 'Icon';
 
 $string['roles']          = 'Access roles';
 $string['layout']         = 'Layout';
@@ -31,12 +33,11 @@ $string['edit']           = 'Edit dashboard';
 $string['delete']         = 'Delete';
 $string['delete_confirm'] = 'Are you sure you want to delete this dashboard: {$a}';
 $string['back']           = 'Back';
-
-$string['classic'] = 'Classic';
-$string['col2']    = 'Two Columns';
-$string['col3']    = 'Three Columns';
-$string['colmore'] = 'As many as it fit';
+$string['classic']        = 'Classic';
+$string['col2']           = 'Two Columns';
+$string['col3']           = 'Three Columns';
+$string['colmore']        = 'As many as it fit';
 
 // icon-selection
-$string['select-icon'] = 'Choose Icon';
+$string['select-icon']   = 'Choose Icon';
 $string['iconselection'] = 'Icon selection';

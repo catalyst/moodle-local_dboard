@@ -16,7 +16,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once __DIR__ . '/locallib.php';
+require_once(__DIR__ . '/locallib.php');
 
 function local_vxg_dashboard_extend_settings_navigation(settings_navigation $settingsnav, context $context)
 {
@@ -27,7 +27,7 @@ function local_vxg_dashboard_extend_navigation(global_navigation $nav)
 {
     global $CFG, $PAGE, $USER, $DB;
 
-    $dashboard_settings = $DB->get_records('vxg_dashboard');
+    $dashboard_settings = $DB->get_records('local_vxg_dashboard');
 
     foreach ($dashboard_settings as $dashboard_setting) {
 
@@ -36,9 +36,9 @@ function local_vxg_dashboard_extend_navigation(global_navigation $nav)
         }
 
         // Get roles for dashboard
-        $user_roles      = dashboard_get_user_role_ids();
+        $user_roles      = local_vxg_dashboard_get_user_role_ids();
         $dashboard_roles = array();
-        $dashboard_roles = $DB->get_records('vxg_right', array('objectid' => $dashboard_setting->id, 'objecttype' => 'dashboard'));
+        $dashboard_roles = $DB->get_records('local_vxg_dashboard_right', array('objectid' => $dashboard_setting->id, 'objecttype' => 'dashboard'));
         // Chech user has roles
         $user_hasrole = false;
         if (!empty($dashboard_roles)) {
@@ -54,14 +54,14 @@ function local_vxg_dashboard_extend_navigation(global_navigation $nav)
 
         }
 
-        $iconarr = explode('/', $dashboard_setting->icon,2);
+        $iconarr = explode('/', $dashboard_setting->icon, 2);
         // Set attributes
         if ($dashboard_setting->dashboard_name == null && $dashboard_setting->dashboard_name == '') {
             $name = get_string('dashboard', 'local_vxg_dashboard');
         } else {
             $name = $dashboard_setting->dashboard_name;
         }
-        $url  = new moodle_url('/local/vxg_dashboard/index.php', array('id' => $dashboard_setting->id));
+        $url = new moodle_url('/local/vxg_dashboard/index.php', array('id' => $dashboard_setting->id));
         if (isset($dashboard_setting->icon) && !empty($dashboard_setting->icon)) {
             $icon = new pix_icon($iconarr[1], $name, $iconarr[0]);
         } else {
@@ -81,7 +81,6 @@ function local_vxg_dashboard_extend_navigation(global_navigation $nav)
         // Make visible in flatnav
         $newnode->showinflatnavigation = true;
 
-        
         if (isloggedin() && $user_hasrole || is_siteadmin()) {
             $nav->add_node($newnode);
         }

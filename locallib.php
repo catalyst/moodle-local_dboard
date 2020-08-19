@@ -16,7 +16,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-function reset_default_dashboard($dashboardid)
+function local_vxg_dashboard_reset_default_dashboard($dashboardid)
 {
     global $CFG, $DB;
 
@@ -26,13 +26,12 @@ function reset_default_dashboard($dashboardid)
     $def_settings->layout     = 'mydashboard';
     $def_settings->showinmenu = '1';
 
-    $settings_id = $DB->update_record('vxg_dashboard', $def_settings);
+    $settings_id = $DB->update_record('local_vxg_dashboard', $def_settings);
 
-    delete_dashboard_blocks($dashboardid);
+    local_vxg_dashboard_delete_dashboard_blocks($dashboardid);
 }
 
-
-function delete_dashboard_blocks($dashboardid = null)
+function local_vxg_dashboard_delete_dashboard_blocks($dashboardid = null)
 {
     global $CFG, $DB;
 
@@ -47,19 +46,18 @@ function delete_dashboard_blocks($dashboardid = null)
 }
 
 // Called when plugin is uninstalled
-function dashboard_plugin_uninstall()
+function local_vxg_dashboard_plugin_uninstall()
 {
     global $CFG, $DB;
 
-        $sql_like        = $DB->sql_like('pagetypepattern', ':type', false);
-        $select          = $sql_like . ' OR pagetypepattern = :manage 
-                                        OR pagetypepattern = :edit 
+    $sql_like = $DB->sql_like('pagetypepattern', ':type', false);
+    $select   = $sql_like . ' OR pagetypepattern = :manage
+                                        OR pagetypepattern = :edit
                                         OR pagetypepattern = :delete';
-        $params['type'] = "veloxnet-dashboard-%";
-        $params['manage'] = "local-dashboard-manage";
-        $params['edit'] = "local-dashboard-edit";
-        $params['delete'] = "local-dashboard-delete";
-    
+    $params['type']   = "veloxnet-dashboard-%";
+    $params['manage'] = "local-dashboard-manage";
+    $params['edit']   = "local-dashboard-edit";
+    $params['delete'] = "local-dashboard-delete";
 
     $blocks = $DB->get_records_select('block_instances', $select, $params);
 
@@ -68,8 +66,7 @@ function dashboard_plugin_uninstall()
     }
 }
 
-
-function dashboard_get_assignable_roles()
+function local_vxg_dashboard_get_assignable_roles()
 {
     global $DB;
 
@@ -86,7 +83,7 @@ function dashboard_get_assignable_roles()
 
 }
 
-function dashboard_get_user_role_ids()
+function local_vxg_dashboard_get_user_role_ids()
 {
     global $USER, $COURSE;
 
@@ -101,12 +98,12 @@ function dashboard_get_user_role_ids()
 
 }
 
-function dashboard_get_access_roles($dashboardid)
+function local_vxg_dashboard_get_access_roles($dashboardid)
 {
     global $DB;
-    $roles = $DB->get_records('vxg_right', array('objectid' => $dashboardid, 'objecttype' => 'dashboard'));
-    $roleids = array_column($roles, 'roleid');
-    $role_names = $DB->get_records_list('role', 'id', $roleids, $sort='', $fields='shortname');
+    $roles      = $DB->get_records('local_vxg_dashboard_right', array('objectid' => $dashboardid, 'objecttype' => 'dashboard'));
+    $roleids    = array_column($roles, 'roleid');
+    $role_names = $DB->get_records_list('role', 'id', $roleids, $sort = '', $fields = 'shortname');
     return implode(', ', array_column($role_names, 'shortname'));
 
 }

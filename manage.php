@@ -21,6 +21,7 @@ require_once(__DIR__ . '/locallib.php');
 global $DB;
 
 require_login();
+require_capability('local/vxg_dashboard:managedashboard', context_system::instance());
 
 $returnurl = optional_param('returnurl', '', PARAM_LOCALURL);
 
@@ -38,7 +39,7 @@ $PAGE->set_url($url);
 $PAGE->set_pagelayout('incourse');
 $PAGE->navbar->add(get_string('manage', 'local_vxg_dashboard'));
 
-$dashboard_settings = $DB->get_records('vxg_dashboard');
+$dashboard_settings = $DB->get_records('local_vxg_dashboard');
 
 $table = new table_sql('local_vxg_dashboard_table');
 
@@ -74,9 +75,9 @@ foreach ($dashboard_settings as $dashboard_setting) {
     $deleteurl    = new moodle_url('/local/vxg_dashboard/delete.php',
         array('id' => $dashboard_setting->id, 'sesskey' => sesskey(), 'returnurl' => $returnurl));
 
-    $deletelink = html_writer::link($deleteurl, $OUTPUT->pix_icon('t/delete', get_string('delete', 'local_vxg_dashboard')));
-    
-    
+    $deletelink = html_writer::link($deleteurl, 
+    $OUTPUT->pix_icon('t/delete', get_string('delete', 'local_vxg_dashboard')));
+
     if (!empty($dashboard_setting->dashboard_name)) {
         $dashboardname = $dashboard_setting->dashboard_name;
     } else {
@@ -84,7 +85,7 @@ foreach ($dashboard_settings as $dashboard_setting) {
     }
     $row[] = $editlinkpic . $deletelink;
     $row[] = $editlink = html_writer::link($editurl, $dashboardname);
-    $row[] = dashboard_get_access_roles($dashboard_setting->id);
+    $row[] = local_vxg_dashboard_get_access_roles($dashboard_setting->id);
 
     $table->add_data($row, $class);
 }

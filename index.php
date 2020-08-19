@@ -28,7 +28,7 @@ if ($id == 0) {
     redirect(new moodle_url('/my'));
 }
 
-$dashboard_settings = $DB->get_record('vxg_dashboard', array('id' => $id));
+$dashboard_settings = $DB->get_record('local_vxg_dashboard', array('id' => $id));
 
 if ($dashboard_settings->dashboard_name == null && $dashboard_settings->dashboard_name == '') {
     $dashboard = get_string('dashboard', 'local_vxg_dashboard');
@@ -36,8 +36,8 @@ if ($dashboard_settings->dashboard_name == null && $dashboard_settings->dashboar
     $dashboard = $dashboard_settings->dashboard_name;
 }
 
-$userid  = $USER->id;
-$context = context_system::instance();
+$userid    = $USER->id;
+$context   = context_system::instance();
 $header    = $dashboard;
 $pagetitle = $dashboard;
 
@@ -54,7 +54,7 @@ $PAGE->requires->css(new \moodle_url('/local/vxg_dashboard/styles.css'));
 
 // Toggle the editing state and switches
 if ($PAGE->user_allowed_editing()) {
-    if  ($edit !== null) { // Editing state was specified
+    if ($edit !== null) { // Editing state was specified
         $USER->editing = $edit; // Change editing state
     }
     // Add button for editing page
@@ -64,26 +64,25 @@ if ($PAGE->user_allowed_editing()) {
     $resetstring = get_string('resetpage', 'my');
     $reseturl    = new moodle_url("/local/vxg_dashboard/index.php", array('id' => $id, 'edit' => 1, 'reset' => 1));
 
+    if (has_capability('local/vxg_dashboard:managedashboard', $context)) {
 
-    if (
-        // $edit !== null &&
-        !isset($USER->editing) || !$USER->editing) {
-        $editstring  = get_string('updatemymoodleon');
-        $resetbutton = $OUTPUT->single_button($reseturl, $resetstring);
-    } else {
-        $editstring  = get_string('updatemymoodleoff');
-        $resetbutton = $OUTPUT->single_button($reseturl, $resetstring);
+        if (!isset($USER->editing) || !$USER->editing) {
+            $editstring  = get_string('updatemymoodleon');
+            $resetbutton = $OUTPUT->single_button($reseturl, $resetstring);
+        } else {
+            $editstring  = get_string('updatemymoodleoff');
+            $resetbutton = $OUTPUT->single_button($reseturl, $resetstring);
+        }
+
+        $params['id'] = $id;
+        $editurl      = new moodle_url("/local/vxg_dashboard/index.php", $params);
+        $editbutton   = $OUTPUT->single_button($editurl, $editstring);
+
+        $returnurl    = new moodle_url('/local/vxg_dashboard/index.php', array('id' => $id));
+        $manageurl    = new moodle_url("/local/vxg_dashboard/manage.php", array('returnurl' => $returnurl));
+        $managebutton = $OUTPUT->single_button($manageurl, get_string('manage', 'local_vxg_dashboard'));
+        $PAGE->set_button($managebutton . $editbutton);
     }
-
-    $params['id'] = $id;
-    $editurl      = new moodle_url("/local/vxg_dashboard/index.php", $params);
-    $editbutton   = $OUTPUT->single_button($editurl, $editstring);
-
-    $returnurl    = new moodle_url('/local/vxg_dashboard/index.php', array('id' => $id));
-    $manageurl    = new moodle_url("/local/vxg_dashboard/manage.php", array('returnurl' => $returnurl));
-    $managebutton = $OUTPUT->single_button($manageurl, get_string('manage', 'local_vxg_dashboard'));
-    $PAGE->set_button($managebutton . $editbutton);
-
 } else {
     $USER->editing = $edit = 0;
 }

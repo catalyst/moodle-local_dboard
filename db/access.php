@@ -16,4 +16,12 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$capabilities = array();
+$capabilities = array(
+    'local/vxg_dashboard:managedashboard' => array(
+        'riskbitmask'  => RISK_SPAM | RISK_XSS,
+        'captype'      => 'write',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'archetypes'   => array(
+        ),
+    ),
+);

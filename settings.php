@@ -16,12 +16,8 @@
 
 defined('MOODLE_INTERNAL') || die;
 
-// Category
-// $ADMIN->add('admin', new admin_category('local_vxg_dashboard',
-//     get_string('dashboard', 'local_vxg_dashboard')));
-
-$returnurl = new moodle_url('/admin/search.php');
-$settingurl = new moodle_url('/local/vxg_dashboard/manage.php', array('returnurl' => $returnurl));
+$returnurl      = new moodle_url('/admin/search.php');
+$settingurl     = new moodle_url('/local/vxg_dashboard/manage.php', array('returnurl' => $returnurl));
 $managesettings = new admin_externalpage('local_vxg_dashboard',
     get_string('dashboard', 'local_vxg_dashboard'), $settingurl);
 

@@ -5,6 +5,7 @@
   grid-auto-rows: min-content;
   grid-auto-flow: dense;
 }
+
 @media screen and (max-width: 497px) {
   .path-veloxnet-dashboard .two-block-columns .block-region {
     display: grid;
@@ -14,6 +15,7 @@
     grid-auto-flow: dense;
   }
 }
+
 .path-veloxnet-dashboard .two-block-columns .block-region > span {
   display: none;
 }

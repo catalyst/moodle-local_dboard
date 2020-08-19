@@ -14,12 +14,21 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-defined('MOODLE_INTERNAL') || die();
+namespace local_vxg_dashboard\privacy;
 
-function xmldb_local_vxg_dashboard_install()
+class provider implements
+// This plugin does not store any personal user data.
+\core_privacy\local\metadata\null_provider
 {
-    global $CFG, $DB;
-    if (!$DB->get_manager()->table_exists('vxg_right')) {
-        $DB->get_manager()->install_from_xmldb_file(core_component::get_plugin_list('local')['vxg_dashboard'] . '/db/vxg_right.xml');
+
+    /**
+     * Get the language string identifier with the component's language
+     * file to explain why this plugin stores no data.
+     *
+     * @return  string
+     */
+    public static function get_reason(): string
+    {
+        return 'privacy:metadata';
     }
 }
