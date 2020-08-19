@@ -18,8 +18,7 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once(__DIR__ . '/../locallib.php');
 
-function xmldb_local_vxg_dashboard_uninstall()
-{
+function xmldb_local_vxg_dashboard_uninstall() {
     global $CFG, $DB;
     local_vxg_dashboard_plugin_uninstall();
     return true;

@@ -39,20 +39,20 @@ $PAGE->set_url($url);
 $PAGE->set_pagelayout('incourse');
 $PAGE->navbar->add(get_string('manage', 'local_vxg_dashboard'));
 
-$dashboard_settings = $DB->get_records('local_vxg_dashboard');
+$dashboardsettings = $DB->get_records('local_vxg_dashboard');
 
 $table = new table_sql('local_vxg_dashboard_table');
 
 echo $OUTPUT->header();
 
-$table_headers = array(
+$tableheaders = array(
     '',
     get_string('name', 'local_vxg_dashboard'),
     get_string('roles', 'local_vxg_dashboard'),
 
 );
 
-$table->define_headers($table_headers);
+$table->define_headers($tableheaders);
 
 $table->define_columns(array('edit', 'name', 'roles'));
 $table->define_baseurl($url);
@@ -61,46 +61,46 @@ $table->collapsible(false);
 $table->setup();
 $class = '';
 
-foreach ($dashboard_settings as $dashboard_setting) {
+foreach ($dashboardsettings as $dashboardsetting) {
     $row   = array();
     $class = '';
 
     $editpicurl = new moodle_url('/pix/t/editinline.svg');
     $editurl    = new moodle_url('/local/vxg_dashboard/edit.php',
-        array('id' => $dashboard_setting->id, 'returnurl' => $returnurl));
+        array('id' => $dashboardsetting->id, 'returnurl' => $returnurl));
 
     $editlinkpic = html_writer::link($editurl, $OUTPUT->pix_icon('t/editinline', 'Edit'));
 
     $deletepicurl = new moodle_url('/pix/t/delete.svg');
     $deleteurl    = new moodle_url('/local/vxg_dashboard/delete.php',
-        array('id' => $dashboard_setting->id, 'sesskey' => sesskey(), 'returnurl' => $returnurl));
+        array('id' => $dashboardsetting->id, 'sesskey' => sesskey(), 'returnurl' => $returnurl));
 
-    $deletelink = html_writer::link($deleteurl, 
+    $deletelink = html_writer::link($deleteurl,
     $OUTPUT->pix_icon('t/delete', get_string('delete', 'local_vxg_dashboard')));
 
-    if (!empty($dashboard_setting->dashboard_name)) {
-        $dashboardname = $dashboard_setting->dashboard_name;
+    if (!empty($dashboardsetting->dashboard_name)) {
+        $dashboardname = $dashboardsetting->dashboard_name;
     } else {
         $dashboardname = get_string('dashboard', 'local_vxg_dashboard');
     }
     $row[] = $editlinkpic . $deletelink;
     $row[] = $editlink = html_writer::link($editurl, $dashboardname);
-    $row[] = local_vxg_dashboard_get_access_roles($dashboard_setting->id);
+    $row[] = local_vxg_dashboard_get_access_roles($dashboardsetting->id);
 
     $table->add_data($row, $class);
 }
 
-$new_url = new moodle_url('/local/vxg_dashboard/edit.php', array('returnurl' => $returnurl));
-$new_btn = html_writer::link($new_url,
+$newurl = new moodle_url('/local/vxg_dashboard/edit.php', array('returnurl' => $returnurl));
+$newbtn = html_writer::link($newurl,
     html_writer::tag('button', get_string('add_new', 'local_vxg_dashboard'),
         array('class' => 'btn btn-primary', 'style' => 'margin:5px;')));
 
-$return_btn = html_writer::link($returnurl,
+$returnbtn = html_writer::link($returnurl,
     html_writer::tag('button', get_string('back', 'local_vxg_dashboard'),
         array('class' => 'btn btn-secondary', 'style' => 'margin:5px;float:right;')));
 
-echo $new_btn;
-echo $return_btn;
+echo $newbtn;
+echo $returnbtn;
 
 $table->finish_output();
 echo $OUTPUT->footer();

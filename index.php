@@ -19,7 +19,7 @@ require_once(__DIR__ . '/locallib.php');
 
 $id = optional_param('id', 0, PARAM_INT);
 
-$edit  = optional_param('edit', null, PARAM_BOOL); // Turn editing on and off
+$edit  = optional_param('edit', null, PARAM_BOOL); // Turn editing on and off.
 $reset = optional_param('reset', null, PARAM_BOOL);
 
 require_login();
@@ -28,12 +28,12 @@ if ($id == 0) {
     redirect(new moodle_url('/my'));
 }
 
-$dashboard_settings = $DB->get_record('local_vxg_dashboard', array('id' => $id));
+$dashboardsettings = $DB->get_record('local_vxg_dashboard', array('id' => $id));
 
-if ($dashboard_settings->dashboard_name == null && $dashboard_settings->dashboard_name == '') {
+if ($dashboardsettings->dashboard_name == null && $dashboardsettings->dashboard_name == '') {
     $dashboard = get_string('dashboard', 'local_vxg_dashboard');
 } else {
-    $dashboard = $dashboard_settings->dashboard_name;
+    $dashboard = $dashboardsettings->dashboard_name;
 }
 
 $userid    = $USER->id;
@@ -41,23 +41,23 @@ $context   = context_system::instance();
 $header    = $dashboard;
 $pagetitle = $dashboard;
 
-// Start setting up the page
+// Start setting up the page.
 $params = array('id' => $id);
 $PAGE->set_context($context);
 $PAGE->set_url('/local/vxg_dashboard/index.php', $params);
 $PAGE->set_pagelayout('mydashboard');
-$PAGE->set_pagetype('veloxnet-dashboard-' . $dashboard_settings->id);
+$PAGE->set_pagetype('veloxnet-dashboard-' . $dashboardsettings->id);
 $PAGE->blocks->add_region('content');
 $PAGE->set_title($pagetitle);
 $PAGE->set_heading($header);
 $PAGE->requires->css(new \moodle_url('/local/vxg_dashboard/styles.css'));
 
-// Toggle the editing state and switches
+// Toggle the editing state and switches.
 if ($PAGE->user_allowed_editing()) {
-    if ($edit !== null) { // Editing state was specified
-        $USER->editing = $edit; // Change editing state
+    if ($edit !== null) { // Editing state was specified.
+        $USER->editing = $edit; // Change editing state.
     }
-    // Add button for editing page
+    // Add button for editing page.
     $params = array('edit' => !$edit);
 
     $resetbutton = '';
@@ -87,17 +87,17 @@ if ($PAGE->user_allowed_editing()) {
     $USER->editing = $edit = 0;
 }
 
-if ($dashboard_settings->layout != 'classic') {
+if ($dashboardsettings->layout != 'classic') {
     $PAGE->blocks->set_default_region('content');
 }
 
 echo $OUTPUT->header();
-if (!empty($dashboard_settings->layout)) {
-    if ($dashboard_settings->layout == 'col2') {
+if (!empty($dashboardsettings->layout)) {
+    if ($dashboardsettings->layout == 'col2') {
         echo html_writer::tag('div', $OUTPUT->custom_block_region('content'), array('class' => 'two-block-columns'));
-    } else if ($dashboard_settings->layout == 'col3') {
+    } else if ($dashboardsettings->layout == 'col3') {
         echo html_writer::tag('div', $OUTPUT->custom_block_region('content'), array('class' => 'three-block-columns'));
-    } else if ($dashboard_settings->layout == 'colmore') {
+    } else if ($dashboardsettings->layout == 'colmore') {
         echo html_writer::tag('div', $OUTPUT->custom_block_region('content'), array('class' => 'auto-fit-block-columns'));
     } else {
         echo $OUTPUT->custom_block_region('content');

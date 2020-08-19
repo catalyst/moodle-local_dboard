@@ -18,70 +18,69 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once(__DIR__ . '/locallib.php');
 
-function local_vxg_dashboard_extend_settings_navigation(settings_navigation $settingsnav, context $context)
-{
+function local_vxg_dashboard_extend_settings_navigation(settings_navigation $settingsnav, context $context) {
     return; // Not used anymore!
 }
 
-function local_vxg_dashboard_extend_navigation(global_navigation $nav)
-{
+function local_vxg_dashboard_extend_navigation(global_navigation $nav) {
     global $CFG, $PAGE, $USER, $DB;
 
-    $dashboard_settings = $DB->get_records('local_vxg_dashboard');
+    $dashboardsettings = $DB->get_records('local_vxg_dashboard');
 
-    foreach ($dashboard_settings as $dashboard_setting) {
+    foreach ($dashboardsettings as $dashboardsetting) {
 
-        if ($dashboard_setting->showinmenu == '0' || $dashboard_setting->showinmenu == null) {
+        if ($dashboardsetting->showinmenu == '0' || $dashboardsetting->showinmenu == null) {
             continue;
         }
 
-        // Get roles for dashboard
-        $user_roles      = local_vxg_dashboard_get_user_role_ids();
-        $dashboard_roles = array();
-        $dashboard_roles = $DB->get_records('local_vxg_dashboard_right', array('objectid' => $dashboard_setting->id, 'objecttype' => 'dashboard'));
-        // Chech user has roles
-        $user_hasrole = false;
-        if (!empty($dashboard_roles)) {
-            foreach ($dashboard_roles as $dashboard_role) {
-                if (in_array($dashboard_role->roleid, $user_roles)) {
+        // Get roles for dashboard.
+        $userroles      = local_vxg_dashboard_get_user_role_ids();
+        $dashboardroles = array();
+        $dashboardroles = $DB->get_records('local_vxg_dashboard_right',
+        array('objectid' => $dashboardsetting->id, 'objecttype' => 'dashboard'));
+        // Chech user has roles.
+        $userhasrole = false;
+        if (!empty($dashboardroles)) {
+            foreach ($dashboardroles as $dashboardrole) {
+                if (in_array($dashboardrole->roleid, $userroles)) {
 
-                    $user_hasrole = true;
+                    $userhasrole = true;
                     continue;
                 }
             }
         } else {
-            $user_hasrole = true;
+            $userhasrole = true;
 
         }
 
-        $iconarr = explode('/', $dashboard_setting->icon, 2);
-        // Set attributes
-        if ($dashboard_setting->dashboard_name == null && $dashboard_setting->dashboard_name == '') {
+        $iconarr = explode('/', $dashboardsetting->icon, 2);
+        // Set attributes.
+        if ($dashboardsetting->dashboard_name == null && $dashboardsetting->dashboard_name == '') {
             $name = get_string('dashboard', 'local_vxg_dashboard');
         } else {
-            $name = $dashboard_setting->dashboard_name;
+            $name = $dashboardsetting->dashboard_name;
         }
-        $url = new moodle_url('/local/vxg_dashboard/index.php', array('id' => $dashboard_setting->id));
-        if (isset($dashboard_setting->icon) && !empty($dashboard_setting->icon)) {
+        $url = new moodle_url('/local/vxg_dashboard/index.php', array('id' => $dashboardsetting->id));
+        if (isset($dashboardsetting->icon) && !empty($dashboardsetting->icon)) {
             $icon = new pix_icon($iconarr[1], $name, $iconarr[0]);
         } else {
             $icon = new pix_icon('t/editstring', $name);
         }
 
-        // Create node
+        // Create node.
         $newnode = navigation_node::create(
             $name,
             $url,
             navigation_node::NODETYPE_LEAF,
             $name,
-            'vxg_dashboard' . $dashboard_setting->id,
+            'vxg_dashboard' . $dashboardsetting->id,
             $icon
         );
 
-        // Make visible in flatnav
+        // Make visible in flatnav.
         $newnode->showinflatnavigation = true;
 
-        if (isloggedin() && $user_hasrole || is_siteadmin()) {
+        if (isloggedin() && $userhasrole || is_siteadmin()) {
             $nav->add_node($newnode);
         }
 

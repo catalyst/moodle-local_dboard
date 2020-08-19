@@ -38,6 +38,6 @@ $string['col2']           = 'Two Columns';
 $string['col3']           = 'Three Columns';
 $string['colmore']        = 'As many as it fit';
 
-// icon-selection
+// Icon-selection.
 $string['select-icon']   = 'Choose Icon';
 $string['iconselection'] = 'Icon selection';

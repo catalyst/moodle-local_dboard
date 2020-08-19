@@ -1,88 +1,88 @@
 .path-veloxnet-dashboard .two-block-columns .block-region {
-  display: grid;
-  grid-column-gap: 10px;
-  grid-template-columns: 50% auto;
-  grid-auto-rows: min-content;
-  grid-auto-flow: dense;
-}
-
-@media screen and (max-width: 497px) {
-  .path-veloxnet-dashboard .two-block-columns .block-region {
-    display: grid;
-    grid-column-gap: 10px;
-    grid-template-columns: 100%;
-    grid-auto-rows: min-content;
-    grid-auto-flow: dense;
-  }
-}
-
-.path-veloxnet-dashboard .two-block-columns .block-region > span {
-  display: none;
-}
-
-.path-veloxnet-dashboard .three-block-columns .block-region {
-  display: grid;
-  grid-column-gap: 10px;
-  grid-template-columns: 33% 32% 33%;
-  grid-auto-rows: min-content;
-  grid-auto-flow: dense;
-}
-
-@media screen and (max-width: 742px) {
-  .path-veloxnet-dashboard .three-block-columns .block-region {
     display: grid;
     grid-column-gap: 10px;
     grid-template-columns: 50% auto;
     grid-auto-rows: min-content;
     grid-auto-flow: dense;
+}
+
+@media screen and (max-width: 497px) {
+  .path-veloxnet-dashboard .two-block-columns .block-region {
+        display: grid;
+        grid-column-gap: 10px;
+        grid-template-columns: 100%;
+        grid-auto-rows: min-content;
+        grid-auto-flow: dense;
+  }
+}
+
+.path-veloxnet-dashboard .two-block-columns .block-region > span {
+    display: none;
+}
+
+.path-veloxnet-dashboard .three-block-columns .block-region {
+    display: grid;
+    grid-column-gap: 10px;
+    grid-template-columns: 33% 32% 33%;
+    grid-auto-rows: min-content;
+    grid-auto-flow: dense;
+}
+
+@media screen and (max-width: 742px) {
+  .path-veloxnet-dashboard .three-block-columns .block-region {
+      display: grid;
+      grid-column-gap: 10px;
+      grid-template-columns: 50% auto;
+      grid-auto-rows: min-content;
+      grid-auto-flow: dense;
   }
 }
 
 @media screen and (max-width: 497px) {
   .path-veloxnet-dashboard .three-block-columns .block-region {
-    display: grid;
-    grid-column-gap: 10px;
-    grid-template-columns: 100%;
-    grid-auto-rows: min-content;
-    grid-auto-flow: dense;
+      display: grid;
+      grid-column-gap: 10px;
+      grid-template-columns: 100%;
+      grid-auto-rows: min-content;
+      grid-auto-flow: dense;
   }
 }
 
 .path-veloxnet-dashboard .three-block-columns .block-region > span {
-  display: none;
+    display: none;
 }
 
 .path-veloxnet-dashboard .auto-fit-block-columns .block-region {
-  display: grid;
-  grid-column-gap: 10px;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  grid-auto-rows: min-content;
-  grid-auto-flow: dense;
-}
+    display: grid;
+    grid-column-gap: 10px;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-auto-rows: min-content;
+    grid-auto-flow: dense;
+}  
 
 .path-veloxnet-dashboard .auto-fit-block-columns .block-region > span {
-  display: none;
+    display: none;
 }
 
 .path-local-vxg_dashboard .choosed-icon {
-  background: wheat;
-  border-radius: 8px;
+    background: wheat;
+    border-radius: 8px;
 }
 
 .path-local-vxg_dashboard .modal-body .icon {
-  font-size: 20px;
-  width: 20px;
-  height: 20px;
-  margin: 0;
-  padding: 5px;
-  -webkit-box-sizing: content-box;
-  box-sizing: content-box;
-  margin-right: 0.5rem;
-  cursor: pointer;
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+    margin: 0;
+    padding: 5px;
+    -webkit-box-sizing: content-box;
+    box-sizing: content-box;
+    margin-right: 0.5rem;
+    cursor: pointer;
 }
 
 .path-local-vxg_dashboard .icon.selected_icon {
-  width: 30px;
-  height: 30px;
-  font-size: 25px;
+    width: 30px;
+    height: 30px;
+    font-size: 25px;
 }

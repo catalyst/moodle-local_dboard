@@ -38,6 +38,6 @@ $string['col2']           = 'Két oszlopos';
 $string['col3']           = 'Három oszlopos';
 $string['colmore']        = 'Amennyi elfér';
 
-// icon-selection
+// Icon-selection.
 $string['select-icon']   = 'Ikon választás';
 $string['iconselection'] = 'Ikon választó';

@@ -40,14 +40,14 @@ $PAGE->requires->js_call_amd('local_vxg_dashboard/icon_picker', 'init');
 $PAGE->requires->css('/local/vxg_dashboard/styles.css');
 
 if ($id > 0) {
-    $dashboard_settings = $DB->get_record('local_vxg_dashboard', array('id' => $id));
-    $selected_roles     = $DB->get_records('local_vxg_dashboard_right', array('objectid' => $id, 'objecttype' => 'dashboard'));
+    $dashboardsettings = $DB->get_record('local_vxg_dashboard', array('id' => $id));
+    $selectedroles     = $DB->get_records('local_vxg_dashboard_right', array('objectid' => $id, 'objecttype' => 'dashboard'));
 }
 
 $iconname = 't/editstring';
 $iconcomp = 'core';
-if (isset($dashboard_settings) && !empty($dashboard_settings->icon)) {
-    $iconarr  = explode('/', $dashboard_settings->icon, 2);
+if (isset($dashboardsettings) && !empty($dashboardsettings->icon)) {
+    $iconarr  = explode('/', $dashboardsettings->icon, 2);
     $iconname = $iconarr[1];
     $iconcomp = $iconarr[0];
 }
@@ -65,7 +65,7 @@ if ($mform->is_cancelled()) {
 
     if ($id > 0) {
         $insert                 = new stdClass();
-        $insert->id             = $dashboard_settings->id;
+        $insert->id             = $dashboardsettings->id;
         $insert->dashboard_name = $data->dashboard_name;
         $insert->layout         = $data->layout;
         $insert->showinmenu     = $data->showinmenu;
@@ -87,7 +87,7 @@ if ($mform->is_cancelled()) {
 
         if ($insert->layout != 'classic') {
             $blocks = $DB->get_records('block_instances',
-                array('pagetypepattern' => 'veloxnet-dashboard-' . $dashboard_settings->id), 'id');
+                array('pagetypepattern' => 'veloxnet-dashboard-' . $dashboardsettings->id), 'id');
 
             foreach ($blocks as $block) {
                 $block->defaultregion = 'content';
@@ -95,7 +95,7 @@ if ($mform->is_cancelled()) {
             }
         } else {
             $blocks = $DB->get_records('block_instances',
-                array('pagetypepattern' => 'veloxnet-dashboard-' . $dashboard_settings->id), 'id');
+                array('pagetypepattern' => 'veloxnet-dashboard-' . $dashboardsettings->id), 'id');
             $counter = 0;
             foreach ($blocks as $block) {
                 if ($counter % 2 == 0) {
@@ -134,11 +134,11 @@ echo $OUTPUT->header();
 if ($id > 0) {
     $mform->set_data(array(
         'id'             => $id,
-        'dashboard_name' => $dashboard_settings->dashboard_name,
-        'showinmenu'     => $dashboard_settings->showinmenu,
-        'icon'           => $dashboard_settings->icon,
-        'roles'          => array_column($selected_roles, 'roleid'),
-        'layout'         => $dashboard_settings->layout));
+        'dashboard_name' => $dashboardsettings->dashboard_name,
+        'showinmenu'     => $dashboardsettings->showinmenu,
+        'icon'           => $dashboardsettings->icon,
+        'roles'          => array_column($selectedroles, 'roleid'),
+        'layout'         => $dashboardsettings->layout));
 }
 $mform->display();
 echo $OUTPUT->footer();

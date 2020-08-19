@@ -14,25 +14,31 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+/**
+ * Vxg dashboard
+ *
+ * @package   local_vxg_dashboard
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @copyright http://veloxnet.hu <lms@veloxnet.hu>
+ */
+
 defined('MOODLE_INTERNAL') || die();
 
-function local_vxg_dashboard_reset_default_dashboard($dashboardid)
-{
+function local_vxg_dashboard_reset_default_dashboard($dashboardid) {
     global $CFG, $DB;
 
-    // Default settings
-    $def_settings             = new stdClass();
-    $def_settings->id         = $dashboardid;
-    $def_settings->layout     = 'mydashboard';
-    $def_settings->showinmenu = '1';
+    // Default settings.
+    $defsettings             = new stdClass();
+    $defsettings->id         = $dashboardid;
+    $defsettings->layout     = 'mydashboard';
+    $defsettings->showinmenu = '1';
 
-    $settings_id = $DB->update_record('local_vxg_dashboard', $def_settings);
+    $settingsid = $DB->update_record('local_vxg_dashboard', $defsettings);
 
     local_vxg_dashboard_delete_dashboard_blocks($dashboardid);
 }
 
-function local_vxg_dashboard_delete_dashboard_blocks($dashboardid = null)
-{
+function local_vxg_dashboard_delete_dashboard_blocks($dashboardid = null) {
     global $CFG, $DB;
 
     $select = 'pagetypepattern = ?';
@@ -45,13 +51,12 @@ function local_vxg_dashboard_delete_dashboard_blocks($dashboardid = null)
     }
 }
 
-// Called when plugin is uninstalled
-function local_vxg_dashboard_plugin_uninstall()
-{
+// Called when plugin is uninstalled.
+function local_vxg_dashboard_plugin_uninstall() {
     global $CFG, $DB;
 
-    $sql_like = $DB->sql_like('pagetypepattern', ':type', false);
-    $select   = $sql_like . ' OR pagetypepattern = :manage
+    $likesql = $DB->sql_like('pagetypepattern', ':type', false);
+    $select   = $likesql . ' OR pagetypepattern = :manage
                                         OR pagetypepattern = :edit
                                         OR pagetypepattern = :delete';
     $params['type']   = "veloxnet-dashboard-%";
@@ -66,44 +71,41 @@ function local_vxg_dashboard_plugin_uninstall()
     }
 }
 
-function local_vxg_dashboard_get_assignable_roles()
-{
+function local_vxg_dashboard_get_assignable_roles() {
     global $DB;
 
-    $role_ids = $DB->get_fieldset_select('role_context_levels', 'DISTINCT roleid',
+    $roleids = $DB->get_fieldset_select('role_context_levels', 'DISTINCT roleid',
         'contextlevel = ? OR contextlevel = ? OR contextlevel = ?', array('10', '40', '50'));
 
-    $insql = 'IN (' . implode(',', $role_ids) . ')';
+    $insql = 'IN (' . implode(',', $roleids) . ')';
 
     $sql = 'SELECT id, shortname FROM {role} WHERE id ' . $insql . ' ORDER BY id';
 
-    $role_names = $DB->get_records_sql_menu($sql);
+    $rolenames = $DB->get_records_sql_menu($sql);
 
-    return $role_names;
+    return $rolenames;
 
 }
 
-function local_vxg_dashboard_get_user_role_ids()
-{
+function local_vxg_dashboard_get_user_role_ids() {
     global $USER, $COURSE;
 
-    $user_roles = get_user_roles(context_course::instance($COURSE->id), $USER->id);
+    $userroles = get_user_roles(context_course::instance($COURSE->id), $USER->id);
 
-    $role_names = array();
-    foreach ($user_roles as $role) {
-        $role_names[] = $role->roleid;
+    $rolenames = array();
+    foreach ($userroles as $role) {
+        $rolenames[] = $role->roleid;
     }
 
-    return $role_names;
+    return $rolenames;
 
 }
 
-function local_vxg_dashboard_get_access_roles($dashboardid)
-{
+function local_vxg_dashboard_get_access_roles($dashboardid) {
     global $DB;
     $roles      = $DB->get_records('local_vxg_dashboard_right', array('objectid' => $dashboardid, 'objecttype' => 'dashboard'));
     $roleids    = array_column($roles, 'roleid');
-    $role_names = $DB->get_records_list('role', 'id', $roleids, $sort = '', $fields = 'shortname');
-    return implode(', ', array_column($role_names, 'shortname'));
+    $rolenames = $DB->get_records_list('role', 'id', $roleids, $sort = '', $fields = 'shortname');
+    return implode(', ', array_column($rolenames, 'shortname'));
 
 }
