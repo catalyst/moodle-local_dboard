@@ -16,6 +16,6 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2020051102;
+$plugin->version   = 2020082000;
 $plugin->requires  = 2017111309;
 $plugin->component = 'local_vxg_dashboard';
