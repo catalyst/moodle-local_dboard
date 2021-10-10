@@ -41,3 +41,11 @@ $string['colmore']        = 'Amennyi elfér';
 // Icon-selection.
 $string['select-icon']   = 'Ikon választás';
 $string['iconselection'] = 'Ikon választó';
+
+$string['privacy:metadata:local_vxg_dashboard_right'] = '';
+$string['privacy:metadata:local_vxg_dashboard_right:userid'] = '';
+$string['privacy:metadata:local_vxg_dashboard_right:roleid'] = '';
+$string['privacy:metadata:local_vxg_dashboard_right:children'] = '';
+$string['privacy:metadata:local_vxg_dashboard_right:righttype'] = '';
+$string['privacy:metadata:local_vxg_dashboard_right:timemodified'] = '';
+$string['privacy:metadata:local_vxg_dashboard_right:usermodified'] = '';

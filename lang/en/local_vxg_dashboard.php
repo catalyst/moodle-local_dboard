@@ -41,3 +41,11 @@ $string['colmore']        = 'As many as it fit';
 // Icon-selection.
 $string['select-icon']   = 'Choose Icon';
 $string['iconselection'] = 'Icon selection';
+
+$string['privacy:metadata:local_vxg_dashboard_right'] = 'The dashboard';
+$string['privacy:metadata:local_vxg_dashboard_right:userid'] = 'The userid of the dashboard';
+$string['privacy:metadata:local_vxg_dashboard_right:roleid'] = 'The roleid of the dashboard';
+$string['privacy:metadata:local_vxg_dashboard_right:children'] = 'The children of the dashboard';
+$string['privacy:metadata:local_vxg_dashboard_right:righttype'] = 'The righttype of the dashboard';
+$string['privacy:metadata:local_vxg_dashboard_right:timemodified'] = 'The timemodified of the dashboard';
+$string['privacy:metadata:local_vxg_dashboard_right:usermodified'] = 'The usermodified of the dashboard';
