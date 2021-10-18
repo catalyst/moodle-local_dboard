@@ -87,10 +87,21 @@ function local_vxg_dashboard_get_assignable_roles() {
 
 }
 
-function local_vxg_dashboard_get_user_role_ids() {
+/**
+ * Get role IDs for dashboard user.
+ *
+ * @param int|null $contextid (optional) Get role IDs within a specific context.
+ * @return array An array of role IDs.
+ */
+function local_vxg_dashboard_get_user_role_ids($contextid=null) {
     global $USER, $COURSE;
 
-    $userroles = get_user_roles(context_course::instance($COURSE->id), $USER->id);
+    if (empty($contextid)) {
+        // Default to using current course context.
+        $userroles = get_user_roles(context_course::instance($COURSE->id), $USER->id);
+    } else {
+        $userroles = get_user_roles(context::instance_by_id($contextid), $USER->id);
+    }
 
     $rolenames = array();
     foreach ($userroles as $role) {
@@ -108,4 +119,32 @@ function local_vxg_dashboard_get_access_roles($dashboardid) {
     $rolenames = $DB->get_records_list('role', 'id', $roleids, $sort = '', $fields = 'shortname');
     return implode(', ', array_column($rolenames, 'shortname'));
 
+}
+
+/**
+ * Determine whether the current user has any valid access role for the dashboard.
+ *
+ * @param int $dashboardid
+ * @param int $contextid Check in a specific context.
+ * @return bool Whether the user has a role
+ */
+function local_vxg_dashboard_user_role_check($dashboardid, $contextid=SYSCONTEXTID) {
+    global $DB, $USER;
+
+    $dashboardroles = $DB->get_records('local_vxg_dashboard_right',
+        array('objectid' => $dashboardid, 'objecttype' => 'dashboard'));
+
+    $userroles = local_vxg_dashboard_get_user_role_ids($contextid);
+
+    if (!empty($dashboardroles)) {
+        foreach ($dashboardroles as $dashboardrole) {
+            if (in_array($dashboardrole->roleid, $userroles)) {
+                return true;  // User has role.
+            }
+        }
+    } else {
+        return true;  // No role restriction.
+    }
+
+    return false;  // No role match found.
 }
