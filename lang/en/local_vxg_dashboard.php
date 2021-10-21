@@ -41,3 +41,7 @@ $string['colmore']        = 'As many as it fit';
 // Icon-selection.
 $string['select-icon']   = 'Choose Icon';
 $string['iconselection'] = 'Icon selection';
+
+// Context level setting.
+$string['contextlevel']      = 'Context level';
+$string['contextlevel_help'] = 'The context level at which this dashboard will be made available. A "contextid" value should be passed through for all dashboards with a context below system level.';

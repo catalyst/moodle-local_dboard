@@ -72,6 +72,18 @@ class manage_dashboard_form extends \moodleform
         $select->setMultiple(true);
         $select->setSize($size);
 
+        // Context helper maps context level numbers into human language strings.
+        $contextlevels = \context_helper::get_all_levels();
+        array_walk($contextlevels, function(&$labelvalue, $levelkey) {
+            $labelvalue = \context_helper::get_level_name($levelkey);
+        });
+
+        $mform->addElement('select', 'contextlevel',
+            get_string('contextlevel', 'local_vxg_dashboard'), $contextlevels);
+        $mform->setDefault('contextlevel', CONTEXT_SYSTEM);
+        $mform->setType('contextlevel', PARAM_INT);
+        $mform->addHelpButton('contextlevel', 'contextlevel', 'local_vxg_dashboard');
+
         $mform->addElement('hidden', 'id', 0);
         $mform->setType('id', PARAM_INT);
         $mform->addElement('hidden', 'returnurl', 0);

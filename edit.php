@@ -82,6 +82,7 @@ if ($mform->is_cancelled()) {
             }
         }
         $insert->icon = $data->icon;
+        $insert->contextlevel = $data->contextlevel;
 
         $newid = $DB->update_record('local_vxg_dashboard', $insert);
 
@@ -122,6 +123,7 @@ if ($mform->is_cancelled()) {
             $DB->insert_record('local_vxg_dashboard_right', $role);
         }
         $insert->icon = $data->icon;
+        $insert->contextlevel = $data->contextlevel;
 
         $newid = $DB->insert_record('local_vxg_dashboard', $insert);
     }
@@ -138,7 +140,8 @@ if ($id > 0) {
         'showinmenu'     => $dashboardsettings->showinmenu,
         'icon'           => $dashboardsettings->icon,
         'roles'          => array_column($selectedroles, 'roleid'),
-        'layout'         => $dashboardsettings->layout));
+        'layout'         => $dashboardsettings->layout,
+        'contextlevel'   => $dashboardsettings->contextlevel));
 }
 $mform->display();
 echo $OUTPUT->footer();
