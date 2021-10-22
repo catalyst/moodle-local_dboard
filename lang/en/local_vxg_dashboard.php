@@ -45,3 +45,6 @@ $string['iconselection'] = 'Icon selection';
 // Context level setting.
 $string['contextlevel']      = 'Context level';
 $string['contextlevel_help'] = 'The context level at which this dashboard will be made available. A "contextid" value should be passed through for all dashboards with a context below system level.';
+$string['context_mismatch']  = 'The dashboard "{$a}" is not available in the specified context.';
+$string['context_notfound']  = 'Context (id={$a}) not found.';
+$string['context_norole']    = 'The dashboard "{$a}" is unavailable to users with your role(s). Please contact your site administrator if you believe this is in error.';
