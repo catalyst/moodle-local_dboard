@@ -19,12 +19,17 @@ require_once(__DIR__ . '/locallib.php');
 
 $id = optional_param('id', 0, PARAM_INT);
 $contextid = optional_param('contextid', SYSCONTEXTID, PARAM_INT);
+$context = context::instance_by_id($contextid, MUST_EXIST);
 
 $edit  = optional_param('edit', null, PARAM_BOOL); // Turn editing on and off.
 $reset = optional_param('reset', null, PARAM_BOOL);
 $redirecturl = new moodle_url('/my');
 
-require_login();
+if($context->get_course_context(false)) {
+    require_course_login($coursecontext->instanceid);
+} else {
+    require_login();
+}
 
 if ($id == 0) {
     redirect($redirecturl);
@@ -36,14 +41,6 @@ if ($dashboardsettings->dashboard_name == null && $dashboardsettings->dashboard_
     $dashboard = get_string('dashboard', 'local_vxg_dashboard');
 } else {
     $dashboard = $dashboardsettings->dashboard_name;
-}
-
-// Ensure contextid has a valid context record.
-try {
-    $context = context::instance_by_id($contextid, MUST_EXIST);
-} catch (dml_missing_record_exception $exception) {
-    redirect($redirecturl, get_string('context_notfound', 'local_vxg_dashboard', $contextid),
-        null, \core\output\notification::NOTIFY_ERROR);
 }
 
 // Ensure dashboard contextlevel matches for the supplied ID.
