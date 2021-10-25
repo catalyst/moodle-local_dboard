@@ -25,7 +25,7 @@ $edit  = optional_param('edit', null, PARAM_BOOL); // Turn editing on and off.
 $reset = optional_param('reset', null, PARAM_BOOL);
 $redirecturl = new moodle_url('/my');
 
-if($context->get_course_context(false)) {
+if ($context->get_course_context(false)) {
     require_course_login($coursecontext->instanceid);
 } else {
     require_login();
