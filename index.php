@@ -43,6 +43,12 @@ if ($dashboardsettings->dashboard_name == null && $dashboardsettings->dashboard_
     $dashboard = $dashboardsettings->dashboard_name;
 }
 
+// If a user context level is specified, pick up this user's context by default.
+if ($contextid == SYSCONTEXTID && $dashboardsettings->contextlevel == CONTEXT_USER) {
+    $context = context_user::instance($USER->id);
+    $contextid = $context->id;
+}
+
 // Ensure dashboard contextlevel matches for the supplied ID.
 if ($dashboardsettings->contextlevel != $context->contextlevel) {
     redirect($redirecturl, get_string('context_mismatch', 'local_vxg_dashboard', $dashboard),
