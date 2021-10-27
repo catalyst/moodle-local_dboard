@@ -26,7 +26,7 @@ $reset = optional_param('reset', null, PARAM_BOOL);
 $redirecturl = new moodle_url('/my');
 
 if ($context->get_course_context(false)) {
-    require_course_login($coursecontext->instanceid);
+    require_course_login($context->instanceid);
 } else {
     require_login();
 }
