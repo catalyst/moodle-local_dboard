@@ -38,6 +38,12 @@ $string['col2']           = 'Two Columns';
 $string['col3']           = 'Three Columns';
 $string['colmore']        = 'As many as it fit';
 
+// Events.
+$string['eventvxgdashboardviewed'] = 'Dashboard viewed';
+$string['eventvxgdashboardcreated'] = 'Dashboard created';
+$string['eventvxgdashboarddeleted'] = 'Dashboard deleted';
+$string['eventvxgdashboardupdated'] = 'Dashboard updated';
+
 // Icon-selection.
 $string['select-icon']   = 'Choose Icon';
 $string['iconselection'] = 'Icon selection';
