@@ -31,7 +31,7 @@ class provider implements
     \core_privacy\local\request\plugin\provider
  {
 
-    
+
     /**
      * Returns metadata.
      *
@@ -44,11 +44,11 @@ class provider implements
             'local_vxg_dashboard_right',
              [
                 'userid' => 'privacy:metadata:local_vxg_dashboard_right:userid',
-                'roleid' => 'privacy:metadata:local_vxg_dashboard_right:roleid',   
-                'children' => 'privacy:metadata:local_vxg_dashboard_right:children', 
-                'righttype' => 'privacy:metadata:local_vxg_dashboard_right:righttype', 
-                'timemodified' => 'privacy:metadata:local_vxg_dashboard_right:timemodified', 
-                'usermodified' => 'privacy:metadata:local_vxg_dashboard_right:usermodified',      
+                'roleid' => 'privacy:metadata:local_vxg_dashboard_right:roleid',
+                'children' => 'privacy:metadata:local_vxg_dashboard_right:children',
+                'righttype' => 'privacy:metadata:local_vxg_dashboard_right:righttype',
+                'timemodified' => 'privacy:metadata:local_vxg_dashboard_right:timemodified',
+                'usermodified' => 'privacy:metadata:local_vxg_dashboard_right:usermodified',
              ],
             'privacy:metadata:local_vxg_dashboard_right'
         );
@@ -56,11 +56,11 @@ class provider implements
     }
 
      /**
-     * Get the list of contexts that contain user information for the specified user.
-     *
-     * @param int $userid The user to search.
-     * @return contextlist $contextlist The contextlist containing the list of contexts used in this plugin.
-     */
+      * Get the list of contexts that contain user information for the specified user.
+      *
+      * @param int $userid The user to search.
+      * @return contextlist $contextlist The contextlist containing the list of contexts used in this plugin.
+      */
     public static function get_contexts_for_userid(int $userid) : contextlist {
         return new contextlist();
     }
@@ -104,6 +104,5 @@ class provider implements
      */
     public static function delete_data_for_user(approved_contextlist $contextlist) {
     }
-   
-}
 
+}

@@ -23,12 +23,13 @@ $id = optional_param('id', 0, PARAM_INT);
 $contextid = optional_param('contextid', SYSCONTEXTID, PARAM_INT);
 $context = context::instance_by_id($contextid, MUST_EXIST);
 
-$edit  = optional_param('edit', null, PARAM_BOOL); // Turn editing on and off.
+$edit = optional_param('edit', null, PARAM_BOOL); // Turn editing on and off.
 $reset = optional_param('reset', null, PARAM_BOOL);
 $redirecturl = new moodle_url('/my');
 
-if ($context->get_course_context(false)) {
-    require_course_login($context->instanceid);
+$coursecontext = $context->get_course_context(false);
+if (!empty($coursecontext)) {
+    require_course_login($coursecontext->instanceid);
 } else {
     require_login();
 }
@@ -45,14 +46,17 @@ if ($dashboardsettings->dashboard_name == null && $dashboardsettings->dashboard_
     $dashboard = $dashboardsettings->dashboard_name;
 }
 
+$canmanage = has_capability('local/vxg_dashboard:managedashboard', context_system::instance());
 // If a user context level is specified, pick up this user's context by default.
-if ($contextid == SYSCONTEXTID && $dashboardsettings->contextlevel == CONTEXT_USER) {
+if ($canmanage && $contextid == SYSCONTEXTID && !empty($USER->editing)) {
+    // This is an admin user with editing turned on - let them edit the page.
+} else if ($contextid == SYSCONTEXTID && $dashboardsettings->contextlevel == CONTEXT_USER) {
     $context = context_user::instance($USER->id);
     $contextid = $context->id;
 }
 
 // Ensure dashboard contextlevel matches for the supplied ID.
-if ($dashboardsettings->contextlevel != $context->contextlevel) {
+if ($dashboardsettings->contextlevel != $context->contextlevel && !$canmanage) { // Allow admin user to configure.
     redirect($redirecturl, get_string('context_mismatch', 'local_vxg_dashboard', $dashboard),
         null, \core\output\notification::NOTIFY_ERROR);
 }
@@ -63,8 +67,15 @@ if (!is_siteadmin() && !local_vxg_dashboard_user_role_check($id, $contextid)) {
         null, \core\output\notification::NOTIFY_ERROR);
 }
 
-$userid    = $USER->id;
-$header    = $dashboard;
+// UC Check permissions - this makes it difficult to use dashboard plugin with non-ace things.
+if ($context->contextlevel == CONTEXT_USER && $context->instanceid == $USER->id) {
+    require_capability('local/ace:viewown', $context);
+} else {
+    require_capability('local/ace:view', $context);
+}
+
+$userid = $USER->id;
+$header = $dashboard;
 $pagetitle = $dashboard;
 // Start setting up the page.
 $params = array('id' => $id);
@@ -74,13 +85,31 @@ if ($contextid != SYSCONTEXTID) {
 }
 $PAGE->set_context($context);
 $PAGE->set_url('/local/vxg_dashboard/index.php', $params);
-$PAGE->set_pagelayout('mydashboard');
+//$PAGE->set_pagelayout('mydashboard'); // UC Change - use single column output and don't inherit custom dashboard css.
 $PAGE->set_pagetype('veloxnet-dashboard-' . $dashboardsettings->id);
 $PAGE->blocks->add_region('content');
 $PAGE->set_title($pagetitle);
+if ($PAGE->context->contextlevel == CONTEXT_USER) { // UC Change improve header.
+    if ($USER->id == $PAGE->context->instanceid) {
+        $header = fullname($USER) . ' - '. $header;
+    } else {
+        $user = $DB->get_record('user', ['id' => $PAGE->context->instanceid]);
+        $header = fullname($user) . ' - '. $header;
+    }
+} else if ($PAGE->context->contextlevel == CONTEXT_COURSE) {
+    $course = get_course($PAGE->context->instanceid);
+    $header = format_string($course->shortname, true, array('context' => $PAGE->context)). ' - '. $header;
+} else if ($PAGE->context->contextlevel == CONTEXT_MODULE) {
+    require_once($CFG->dirroot . '/course/modlib.php');
+    $course = get_course($coursecontext->instanceid);
+    $cm = get_coursemodule_from_id('', $PAGE->context->instanceid, $coursecontext->instanceid);
+    $PAGE->set_cm($cm);
+    $header = format_string($course->shortname, true, array('context' => $PAGE->context)). ' - '.
+              format_string($cm->name, true, array('context' => $PAGE->context)). ' - '. $header;
+}
 $PAGE->set_heading($header);
 $PAGE->requires->css(new \moodle_url('/local/vxg_dashboard/styles.css'));
-
+$PAGE->navbar->add($dashboard);
 // Toggle the editing state and switches.
 if ($PAGE->user_allowed_editing()) {
     if ($edit !== null) { // Editing state was specified.
@@ -91,16 +120,16 @@ if ($PAGE->user_allowed_editing()) {
 
     $resetbutton = '';
     $resetstring = get_string('resetpage', 'my');
-    $reseturl    = new moodle_url("/local/vxg_dashboard/index.php", array('id' => $id, 'contextid' => $contextid,
+    $reseturl = new moodle_url("/local/vxg_dashboard/index.php", array('id' => $id, 'contextid' => $contextid,
         'edit' => 1, 'reset' => 1));
 
     if (has_capability('local/vxg_dashboard:managedashboard', $context)) {
 
         if (!isset($USER->editing) || !$USER->editing) {
-            $editstring  = get_string('updatemymoodleon');
+            $editstring = get_string('updatemymoodleon');
             $resetbutton = $OUTPUT->single_button($reseturl, $resetstring);
         } else {
-            $editstring  = get_string('updatemymoodleoff');
+            $editstring = get_string('updatemymoodleoff');
             $resetbutton = $OUTPUT->single_button($reseturl, $resetstring);
         }
 
@@ -108,11 +137,11 @@ if ($PAGE->user_allowed_editing()) {
         if ($contextid != SYSCONTEXTID) {
             $params['contextid'] = $contextid;
         }
-        $editurl      = new moodle_url("/local/vxg_dashboard/index.php", $params);
-        $editbutton   = $OUTPUT->single_button($editurl, $editstring);
+        $editurl = new moodle_url("/local/vxg_dashboard/index.php", $params);
+        $editbutton = $OUTPUT->single_button($editurl, $editstring);
 
-        $returnurl    = new moodle_url('/local/vxg_dashboard/index.php', $params);
-        $manageurl    = new moodle_url("/local/vxg_dashboard/manage.php", array('returnurl' => $returnurl));
+        $returnurl = new moodle_url('/local/vxg_dashboard/index.php', $params);
+        $manageurl = new moodle_url("/local/vxg_dashboard/manage.php", array('returnurl' => $returnurl));
         $managebutton = $OUTPUT->single_button($manageurl, get_string('manage', 'local_vxg_dashboard'));
         $PAGE->set_button($managebutton . $editbutton);
     }
