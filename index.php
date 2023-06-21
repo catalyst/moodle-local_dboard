@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+use local_vxg_dashboard\event\vxg_dashboard_viewed;
+
 require_once('../../config.php');
 require_once(__DIR__ . '/locallib.php');
 
@@ -136,4 +138,10 @@ if (!empty($dashboardsettings->layout)) {
 } else {
     echo $OUTPUT->custom_block_region('content');
 }
+
+// Trigger event, vxg dashboard viewed.
+$eventparams = array('context' => $PAGE->context, 'objectid' => $id);
+$event = vxg_dashboard_viewed::create($eventparams);
+$event->trigger();
+
 echo $OUTPUT->footer();

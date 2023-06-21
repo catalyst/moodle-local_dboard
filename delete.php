@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+use local_vxg_dashboard\event\vxg_dashboard_deleted;
+
 require_once('../../config.php');
 require_once(__DIR__ . '/locallib.php');
 
@@ -46,6 +48,10 @@ $redirecturl = new moodle_url('/local/vxg_dashboard/manage.php', array('returnur
 if ($delete) {
     $DB->delete_records('local_vxg_dashboard', array('id' => $id));
     local_vxg_dashboard_delete_dashboard_blocks($id);
+    // Trigger event, vxg dashboard deleted.
+    $eventparams = array('context' => $PAGE->context, 'objectid' => $id);
+    $event = vxg_dashboard_deleted::create($eventparams);
+    $event->trigger();
     redirect($redirecturl);
 }
 

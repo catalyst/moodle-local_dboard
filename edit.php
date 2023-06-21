@@ -14,6 +14,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+use local_vxg_dashboard\event\vxg_dashboard_created;
+use local_vxg_dashboard\event\vxg_dashboard_updated;
+
 require_once('../../config.php');
 
 global $DB, $CFG, $USER;
@@ -107,6 +110,11 @@ if ($mform->is_cancelled()) {
             }
         }
 
+        // Trigger event, vxg dashboard updated.
+        $eventparams = array('context' => $PAGE->context, 'objectid' => $id);
+        $event = vxg_dashboard_updated::create($eventparams);
+        $event->trigger();
+
     } else {
         $insert                 = new stdClass();
         $insert->dashboard_name = $data->dashboard_name;
@@ -133,6 +141,10 @@ if ($mform->is_cancelled()) {
             $DB->insert_record('local_vxg_dashboard_right', $role);
         }
 
+        // Trigger event, vxg dashboard created.
+        $eventparams = array('context' => $PAGE->context, 'objectid' => $newid);
+        $event = vxg_dashboard_created::create($eventparams);
+        $event->trigger();
     }
     redirect($redirecturl);
 
