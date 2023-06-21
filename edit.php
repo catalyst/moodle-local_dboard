@@ -82,6 +82,7 @@ if ($mform->is_cancelled()) {
             }
         }
         $insert->icon = $data->icon;
+        $insert->contextlevel = $data->contextlevel;
 
         $newid = $DB->update_record('local_vxg_dashboard', $insert);
 
@@ -111,19 +112,27 @@ if ($mform->is_cancelled()) {
         $insert->dashboard_name = $data->dashboard_name;
         $insert->layout         = $data->layout;
         $insert->showinmenu     = $data->showinmenu;
+        $insert->icon           = $data->icon;
+        $insert->contextlevel   = $data->contextlevel;
+
+        $newid = $DB->insert_record('local_vxg_dashboard', $insert);
+
+        /* Create new access roles, linked to new dashboard.
+         *
+         * If the $id is 0, there shouldn't be anything here.
+         * Leaving delete_records() call in for a sanity check.
+         */
         $DB->delete_records('local_vxg_dashboard_right', array('objecttype' => 'dashboard', 'objectid' => $data->id));
         foreach ($data->roles as $roleid) {
             $role               = new stdClass();
             $role->objecttype   = 'dashboard';
-            $role->objectid     = $data->id;
+            $role->objectid     = $newid;
             $role->roleid       = $roleid;
             $role->timemodified = date("Y-m-d H:i:s");
             $role->usermodified = $USER->id;
             $DB->insert_record('local_vxg_dashboard_right', $role);
         }
-        $insert->icon = $data->icon;
 
-        $newid = $DB->insert_record('local_vxg_dashboard', $insert);
     }
     redirect($redirecturl);
 
@@ -138,7 +147,8 @@ if ($id > 0) {
         'showinmenu'     => $dashboardsettings->showinmenu,
         'icon'           => $dashboardsettings->icon,
         'roles'          => array_column($selectedroles, 'roleid'),
-        'layout'         => $dashboardsettings->layout));
+        'layout'         => $dashboardsettings->layout,
+        'contextlevel'   => $dashboardsettings->contextlevel));
 }
 $mform->display();
 echo $OUTPUT->footer();

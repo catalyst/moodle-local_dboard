@@ -38,20 +38,8 @@ function local_vxg_dashboard_extend_navigation(global_navigation $nav) {
         $dashboardroles = array();
         $dashboardroles = $DB->get_records('local_vxg_dashboard_right',
         array('objectid' => $dashboardsetting->id, 'objecttype' => 'dashboard'));
-        // Chech user has roles.
-        $userhasrole = false;
-        if (!empty($dashboardroles)) {
-            foreach ($dashboardroles as $dashboardrole) {
-                if (in_array($dashboardrole->roleid, $userroles)) {
-
-                    $userhasrole = true;
-                    continue;
-                }
-            }
-        } else {
-            $userhasrole = true;
-
-        }
+        // Check user has roles.
+        $userhasrole = local_vxg_dashboard_user_role_check($dashboardsetting->id);
 
         $iconarr = explode('/', $dashboardsetting->icon, 2);
         // Set attributes.

@@ -23,6 +23,11 @@ $id        = required_param('id', PARAM_INT);
 $delete    = optional_param('delete', false, PARAM_BOOL);
 $returnurl = optional_param('returnurl', '', PARAM_LOCALURL);
 
+if (!empty($returnurl)) {
+    // Unescape any ampersands, etc.
+    $returnurl = htmlspecialchars_decode($returnurl);
+}
+
 require_login();
 require_sesskey();
 require_capability('local/vxg_dashboard:managedashboard', context_system::instance());

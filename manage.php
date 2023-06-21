@@ -27,6 +27,9 @@ $returnurl = optional_param('returnurl', '', PARAM_LOCALURL);
 
 if (empty($returnurl)) {
     $returnurl = new moodle_url('/my');
+} else {
+    // Unescape any ampersands, etc.
+    $returnurl = htmlspecialchars_decode($returnurl);
 }
 
 $url = new moodle_url('/local/vxg_dashboard/manage.php');
@@ -49,12 +52,13 @@ $tableheaders = array(
     '',
     get_string('name', 'local_vxg_dashboard'),
     get_string('roles', 'local_vxg_dashboard'),
+    get_string('contextlevel', 'local_vxg_dashboard'),
 
 );
 
 $table->define_headers($tableheaders);
 
-$table->define_columns(array('edit', 'name', 'roles'));
+$table->define_columns(array('edit', 'name', 'roles', 'contextlevel'));
 $table->define_baseurl($url);
 $table->sortable(false);
 $table->collapsible(false);
@@ -86,6 +90,7 @@ foreach ($dashboardsettings as $dashboardsetting) {
     $row[] = $editlinkpic . $deletelink;
     $row[] = $editlink = html_writer::link($editurl, $dashboardname);
     $row[] = local_vxg_dashboard_get_access_roles($dashboardsetting->id);
+    $row[] = \context_helper::get_level_name($dashboardsetting->contextlevel);
 
     $table->add_data($row, $class);
 }

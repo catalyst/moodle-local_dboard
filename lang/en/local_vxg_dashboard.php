@@ -27,7 +27,7 @@ $string['roles']          = 'Access roles';
 $string['layout']         = 'Layout';
 $string['layout_help']    = 'How many blocks should be in a row?';
 $string['manage']         = 'Manage dashboards';
-$string['showinmenu']     = 'Show in menu';
+$string['showinmenu']     = 'Show in system menu';
 $string['add_new']        = 'New dashboard';
 $string['edit']           = 'Edit dashboard';
 $string['delete']         = 'Delete';
@@ -41,6 +41,12 @@ $string['colmore']        = 'As many as it fit';
 // Icon-selection.
 $string['select-icon']   = 'Choose Icon';
 $string['iconselection'] = 'Icon selection';
+
+// Context level setting.
+$string['contextlevel']      = 'Context level';
+$string['contextlevel_help'] = 'The context level at which this dashboard will be made available. A "contextid" value should be passed through for all dashboards with a context below system level.';
+$string['context_mismatch']  = 'The dashboard "{$a}" is not available in the specified context.';
+$string['context_norole']    = 'The dashboard "{$a}" is unavailable to users with your role(s). Please contact your site administrator if you believe this is in error.';
 
 $string['privacy:metadata:local_vxg_dashboard_right'] = 'The dashboard';
 $string['privacy:metadata:local_vxg_dashboard_right:userid'] = 'The userid of the dashboard';

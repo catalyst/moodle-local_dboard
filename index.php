@@ -18,14 +18,21 @@ require_once('../../config.php');
 require_once(__DIR__ . '/locallib.php');
 
 $id = optional_param('id', 0, PARAM_INT);
+$contextid = optional_param('contextid', SYSCONTEXTID, PARAM_INT);
+$context = context::instance_by_id($contextid, MUST_EXIST);
 
 $edit  = optional_param('edit', null, PARAM_BOOL); // Turn editing on and off.
 $reset = optional_param('reset', null, PARAM_BOOL);
+$redirecturl = new moodle_url('/my');
 
-require_login();
+if ($context->get_course_context(false)) {
+    require_course_login($context->instanceid);
+} else {
+    require_login();
+}
 
 if ($id == 0) {
-    redirect(new moodle_url('/my'));
+    redirect($redirecturl);
 }
 
 $dashboardsettings = $DB->get_record('local_vxg_dashboard', array('id' => $id));
@@ -36,13 +43,33 @@ if ($dashboardsettings->dashboard_name == null && $dashboardsettings->dashboard_
     $dashboard = $dashboardsettings->dashboard_name;
 }
 
+// If a user context level is specified, pick up this user's context by default.
+if ($contextid == SYSCONTEXTID && $dashboardsettings->contextlevel == CONTEXT_USER) {
+    $context = context_user::instance($USER->id);
+    $contextid = $context->id;
+}
+
+// Ensure dashboard contextlevel matches for the supplied ID.
+if ($dashboardsettings->contextlevel != $context->contextlevel) {
+    redirect($redirecturl, get_string('context_mismatch', 'local_vxg_dashboard', $dashboard),
+        null, \core\output\notification::NOTIFY_ERROR);
+}
+
+// Ensure user has access by role in this context.
+if (!is_siteadmin() && !local_vxg_dashboard_user_role_check($id, $contextid)) {
+    redirect($redirecturl, get_string('context_norole', 'local_vxg_dashboard', $dashboard),
+        null, \core\output\notification::NOTIFY_ERROR);
+}
+
 $userid    = $USER->id;
-$context   = context_system::instance();
 $header    = $dashboard;
 $pagetitle = $dashboard;
-
 // Start setting up the page.
 $params = array('id' => $id);
+// Default behaviour for system context; no contextid needed.
+if ($contextid != SYSCONTEXTID) {
+    $params['contextid'] = $contextid;
+}
 $PAGE->set_context($context);
 $PAGE->set_url('/local/vxg_dashboard/index.php', $params);
 $PAGE->set_pagelayout('mydashboard');
@@ -62,7 +89,8 @@ if ($PAGE->user_allowed_editing()) {
 
     $resetbutton = '';
     $resetstring = get_string('resetpage', 'my');
-    $reseturl    = new moodle_url("/local/vxg_dashboard/index.php", array('id' => $id, 'edit' => 1, 'reset' => 1));
+    $reseturl    = new moodle_url("/local/vxg_dashboard/index.php", array('id' => $id, 'contextid' => $contextid,
+        'edit' => 1, 'reset' => 1));
 
     if (has_capability('local/vxg_dashboard:managedashboard', $context)) {
 
@@ -75,10 +103,13 @@ if ($PAGE->user_allowed_editing()) {
         }
 
         $params['id'] = $id;
+        if ($contextid != SYSCONTEXTID) {
+            $params['contextid'] = $contextid;
+        }
         $editurl      = new moodle_url("/local/vxg_dashboard/index.php", $params);
         $editbutton   = $OUTPUT->single_button($editurl, $editstring);
 
-        $returnurl    = new moodle_url('/local/vxg_dashboard/index.php', array('id' => $id));
+        $returnurl    = new moodle_url('/local/vxg_dashboard/index.php', $params);
         $manageurl    = new moodle_url("/local/vxg_dashboard/manage.php", array('returnurl' => $returnurl));
         $managebutton = $OUTPUT->single_button($manageurl, get_string('manage', 'local_vxg_dashboard'));
         $PAGE->set_button($managebutton . $editbutton);
