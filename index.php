@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-use local_vxg_dashboard\event\vxg_dashboard_viewed;
+use local_dboard\event\dboard_viewed;
 
 require_once('../../config.php');
 require_once(__DIR__ . '/locallib.php');
@@ -38,42 +38,44 @@ if ($id == 0) {
     redirect($redirecturl);
 }
 
-$dashboardsettings = $DB->get_record('local_vxg_dashboard', array('id' => $id));
+$dashboardsettings = $DB->get_record('local_dboard', array('id' => $id));
 
 if ($dashboardsettings->dashboard_name == null && $dashboardsettings->dashboard_name == '') {
-    $dashboard = get_string('dashboard', 'local_vxg_dashboard');
+    $dashboard = get_string('dashboard', 'local_dboard');
 } else {
     $dashboard = $dashboardsettings->dashboard_name;
 }
-
-$canmanage = has_capability('local/vxg_dashboard:managedashboard', context_system::instance());
+if ($contextid == SYSCONTEXTID) {
+    $systemcontextid = 1;
+}
+$canmanage = has_capability('local/dboard:managedashboard', context_system::instance());
 // If a user context level is specified, pick up this user's context by default.
 if ($canmanage && $contextid == SYSCONTEXTID && !empty($USER->editing)) {
     // This is an admin user with editing turned on - let them edit the page.
-} else if ($contextid == SYSCONTEXTID && $dashboardsettings->contextlevel == CONTEXT_USER) {
+} else if ($contextid == SYSCONTEXTID && $dashboardsettings->contextlevel == CONTEXT_USER && !$canmanage) {
     $context = context_user::instance($USER->id);
     $contextid = $context->id;
 }
 
 // Ensure dashboard contextlevel matches for the supplied ID.
 if ($dashboardsettings->contextlevel != $context->contextlevel && !$canmanage) { // Allow admin user to configure.
-    redirect($redirecturl, get_string('context_mismatch', 'local_vxg_dashboard', $dashboard),
+    redirect($redirecturl, get_string('context_mismatch', 'local_dboard', $dashboard),
         null, \core\output\notification::NOTIFY_ERROR);
 }
 
 // Ensure user has access by role in this context.
-if (!is_siteadmin() && !local_vxg_dashboard_user_role_check($id, $contextid)) {
-    redirect($redirecturl, get_string('context_norole', 'local_vxg_dashboard', $dashboard),
+if (!is_siteadmin() && !local_dboard_user_role_check($id, $contextid)) {
+    redirect($redirecturl, get_string('context_norole', 'local_dboard', $dashboard),
         null, \core\output\notification::NOTIFY_ERROR);
 }
-
+/*
 // UC Check permissions - this makes it difficult to use dashboard plugin with non-ace things.
 if ($context->contextlevel == CONTEXT_USER && $context->instanceid == $USER->id) {
     require_capability('local/ace:viewown', $context);
 } else {
     require_capability('local/ace:view', $context);
 }
-
+*/
 $userid = $USER->id;
 $header = $dashboard;
 $pagetitle = $dashboard;
@@ -84,9 +86,9 @@ if ($contextid != SYSCONTEXTID) {
     $params['contextid'] = $contextid;
 }
 $PAGE->set_context($context);
-$PAGE->set_url('/local/vxg_dashboard/index.php', $params);
+$PAGE->set_url('/local/dboard/index.php', $params);
 //$PAGE->set_pagelayout('mydashboard'); // UC Change - use single column output and don't inherit custom dashboard css.
-$PAGE->set_pagetype('veloxnet-dashboard-' . $dashboardsettings->id);
+$PAGE->set_pagetype('dboard-' . $dashboardsettings->id);
 $PAGE->blocks->add_region('content');
 $PAGE->set_title($pagetitle);
 if ($PAGE->context->contextlevel == CONTEXT_USER) { // UC Change improve header.
@@ -108,10 +110,16 @@ if ($PAGE->context->contextlevel == CONTEXT_USER) { // UC Change improve header.
               format_string($cm->name, true, array('context' => $PAGE->context)). ' - '. $header;
 }
 $PAGE->set_heading($header);
-$PAGE->requires->css(new \moodle_url('/local/vxg_dashboard/styles.css'));
+$PAGE->requires->css(new \moodle_url('/local/dboard/styles.css'));
 $PAGE->navbar->add($dashboard);
+
+// Allow to configure a dashboard on a system context level only.
+if (!isset($systemcontextid)) {
+    $PAGE->add_body_class('disable-editmode');
+    $USER->editing = 0;
+}
 // Toggle the editing state and switches.
-if ($PAGE->user_allowed_editing()) {
+if ($PAGE->user_allowed_editing() && isset($systemcontextid)) {
     if ($edit !== null) { // Editing state was specified.
         $USER->editing = $edit; // Change editing state.
     }
@@ -120,10 +128,10 @@ if ($PAGE->user_allowed_editing()) {
 
     $resetbutton = '';
     $resetstring = get_string('resetpage', 'my');
-    $reseturl = new moodle_url("/local/vxg_dashboard/index.php", array('id' => $id, 'contextid' => $contextid,
+    $reseturl = new moodle_url("/local/dboard/index.php", array('id' => $id, 'contextid' => $contextid,
         'edit' => 1, 'reset' => 1));
 
-    if (has_capability('local/vxg_dashboard:managedashboard', $context)) {
+    if (has_capability('local/dboard:managedashboard', $context)) {
 
         if (!isset($USER->editing) || !$USER->editing) {
             $editstring = get_string('updatemymoodleon');
@@ -137,12 +145,12 @@ if ($PAGE->user_allowed_editing()) {
         if ($contextid != SYSCONTEXTID) {
             $params['contextid'] = $contextid;
         }
-        $editurl = new moodle_url("/local/vxg_dashboard/index.php", $params);
+        $editurl = new moodle_url("/local/dboard/index.php", $params);
         $editbutton = $OUTPUT->single_button($editurl, $editstring);
 
-        $returnurl = new moodle_url('/local/vxg_dashboard/index.php', $params);
-        $manageurl = new moodle_url("/local/vxg_dashboard/manage.php", array('returnurl' => $returnurl));
-        $managebutton = $OUTPUT->single_button($manageurl, get_string('manage', 'local_vxg_dashboard'));
+        $returnurl = new moodle_url('/local/dboard/index.php', $params);
+        $manageurl = new moodle_url("/local/dboard/manage.php", array('returnurl' => $returnurl));
+        $managebutton = $OUTPUT->single_button($manageurl, get_string('manage', 'local_dboard'));
         $PAGE->set_button($managebutton . $editbutton);
     }
 } else {
@@ -154,6 +162,7 @@ if ($dashboardsettings->layout != 'classic') {
 }
 
 echo $OUTPUT->header();
+
 if (!empty($dashboardsettings->layout)) {
     if ($dashboardsettings->layout == 'col2') {
         echo html_writer::tag('div', $OUTPUT->custom_block_region('content'), array('class' => 'two-block-columns'));
@@ -168,9 +177,9 @@ if (!empty($dashboardsettings->layout)) {
     echo $OUTPUT->custom_block_region('content');
 }
 
-// Trigger event, vxg dashboard viewed.
+// Trigger event, dboard dashboard viewed.
 $eventparams = array('context' => $PAGE->context, 'objectid' => $id);
-$event = vxg_dashboard_viewed::create($eventparams);
+$event = dboard_viewed::create($eventparams);
 $event->trigger();
 
 echo $OUTPUT->footer();

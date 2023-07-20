@@ -21,7 +21,7 @@ require_once(__DIR__ . '/locallib.php');
 global $DB;
 
 require_login();
-require_capability('local/vxg_dashboard:managedashboard', context_system::instance());
+require_capability('local/dboard:managedashboard', context_system::instance());
 
 $returnurl = optional_param('returnurl', '', PARAM_LOCALURL);
 
@@ -32,27 +32,27 @@ if (empty($returnurl)) {
     $returnurl = htmlspecialchars_decode($returnurl);
 }
 
-$url = new moodle_url('/local/vxg_dashboard/manage.php');
+$url = new moodle_url('/local/dboard/manage.php');
 
-$heading = get_string('manage', 'local_vxg_dashboard');
+$heading = get_string('manage', 'local_dboard');
 $PAGE->set_context(context_system::instance());
 $PAGE->set_title($heading);
 $PAGE->set_heading($heading);
 $PAGE->set_url($url);
 $PAGE->set_pagelayout('incourse');
-$PAGE->navbar->add(get_string('manage', 'local_vxg_dashboard'));
+$PAGE->navbar->add(get_string('manage', 'local_dboard'));
 
-$dashboardsettings = $DB->get_records('local_vxg_dashboard');
+$dashboardsettings = $DB->get_records('local_dboard');
 
-$table = new table_sql('local_vxg_dashboard_table');
+$table = new table_sql('local_dboard_table');
 
 echo $OUTPUT->header();
 
 $tableheaders = array(
     '',
-    get_string('name', 'local_vxg_dashboard'),
-    get_string('roles', 'local_vxg_dashboard'),
-    get_string('contextlevel', 'local_vxg_dashboard'),
+    get_string('name', 'local_dboard'),
+    get_string('roles', 'local_dboard'),
+    get_string('contextlevel', 'local_dboard'),
 
 );
 
@@ -70,38 +70,44 @@ foreach ($dashboardsettings as $dashboardsetting) {
     $class = '';
 
     $editpicurl = new moodle_url('/pix/t/editinline.svg');
-    $editurl    = new moodle_url('/local/vxg_dashboard/edit.php',
+    $editurl    = new moodle_url('/local/dboard/edit.php',
         array('id' => $dashboardsetting->id, 'returnurl' => $returnurl));
 
     $editlinkpic = html_writer::link($editurl, $OUTPUT->pix_icon('t/editinline', 'Edit'));
 
     $deletepicurl = new moodle_url('/pix/t/delete.svg');
-    $deleteurl    = new moodle_url('/local/vxg_dashboard/delete.php',
+    $deleteurl    = new moodle_url('/local/dboard/delete.php',
         array('id' => $dashboardsetting->id, 'sesskey' => sesskey(), 'returnurl' => $returnurl));
 
     $deletelink = html_writer::link($deleteurl,
-    $OUTPUT->pix_icon('t/delete', get_string('delete', 'local_vxg_dashboard')));
+    $OUTPUT->pix_icon('t/delete', get_string('delete', 'local_dboard')));
+
+    $customisepicurl = new moodle_url('/pix/t/editinline.svg');
+    $customiseurl    = new moodle_url('/local/dboard/index.php',
+        array('id' => $dashboardsetting->id, 'contextid' => SYSCONTEXTID, 'returnurl' => $returnurl));
+
+    $customiselinkpic = html_writer::link($customiseurl, $OUTPUT->pix_icon('t/edit', 'Customise'));
 
     if (!empty($dashboardsetting->dashboard_name)) {
         $dashboardname = $dashboardsetting->dashboard_name;
     } else {
-        $dashboardname = get_string('dashboard', 'local_vxg_dashboard');
+        $dashboardname = get_string('dashboard', 'local_dboard');
     }
-    $row[] = $editlinkpic . $deletelink;
+    $row[] = $editlinkpic . $deletelink . $customiselinkpic;
     $row[] = $editlink = html_writer::link($editurl, $dashboardname);
-    $row[] = local_vxg_dashboard_get_access_roles($dashboardsetting->id);
+    $row[] = local_dboard_get_access_roles($dashboardsetting->id);
     $row[] = \context_helper::get_level_name($dashboardsetting->contextlevel);
 
     $table->add_data($row, $class);
 }
 
-$newurl = new moodle_url('/local/vxg_dashboard/edit.php', array('returnurl' => $returnurl));
+$newurl = new moodle_url('/local/dboard/edit.php', array('returnurl' => $returnurl));
 $newbtn = html_writer::link($newurl,
-    html_writer::tag('button', get_string('add_new', 'local_vxg_dashboard'),
+    html_writer::tag('button', get_string('add_new', 'local_dboard'),
         array('class' => 'btn btn-primary', 'style' => 'margin:5px;')));
 
 $returnbtn = html_writer::link($returnurl,
-    html_writer::tag('button', get_string('back', 'local_vxg_dashboard'),
+    html_writer::tag('button', get_string('back', 'local_dboard'),
         array('class' => 'btn btn-secondary', 'style' => 'margin:5px;float:right;')));
 
 echo $newbtn;

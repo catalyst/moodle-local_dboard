@@ -16,15 +16,15 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-function xmldb_local_vxg_dashboard_upgrade($oldversion) {
+function xmldb_local_dboard_upgrade($oldversion) {
     global $DB;
 
     $dbman = $DB->get_manager();
 
     if ($oldversion < 2021102100) {
 
-        // Define field contextlevel to be added to local_vxg_dashboard.
-        $table = new xmldb_table('local_vxg_dashboard');
+        // Define field contextlevel to be added to local_dboard.
+        $table = new xmldb_table('local_dboard');
         $field = new xmldb_field('contextlevel', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '10', 'lang');
 
         // Conditionally launch add field contextlevel.
@@ -32,8 +32,8 @@ function xmldb_local_vxg_dashboard_upgrade($oldversion) {
             $dbman->add_field($table, $field);
         }
 
-        // Vxg_dashboard savepoint reached.
-        upgrade_plugin_savepoint(true, 2021102100, 'local', 'vxg_dashboard');
+        // dboard savepoint reached.
+        upgrade_plugin_savepoint(true, 2021102100, 'local', 'dboard');
     }
 
 }

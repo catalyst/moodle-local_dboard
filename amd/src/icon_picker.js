@@ -31,7 +31,7 @@ define([
   return {
     init: function () {
       var icon_pickerlink = $("[data-key=icon_picker]");
-      var title = Str.get_string("iconselection", "local_vxg_dashboard");
+      var title = Str.get_string("iconselection", "local_dboard");
 
       fetchMap = Ajax.call([
         {
@@ -59,7 +59,7 @@ define([
         ModalFactory.create(
           {
             title: title,
-            body: Templates.render("local_vxg_dashboard/icon_picker_modal", {
+            body: Templates.render("local_dboard/icon_picker_modal", {
               icons: iconArray,
             }),
             type: "SAVE_CANCEL",

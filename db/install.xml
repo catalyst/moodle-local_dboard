@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="local/vxg_dashboard/db" VERSION="20211021" COMMENT="XMLDB file for Moodle local/vxg_dashboard"
+<XMLDB PATH="local/dboard/db" VERSION="20211021" COMMENT="XMLDB file for Moodle local/dboard"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >
   <TABLES>
-    <TABLE NAME="local_vxg_dashboard" COMMENT="Settings for veloxnet dashboard">
+    <TABLE NAME="local_dboard" COMMENT="Settings for veloxnet dashboard">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="dashboard_name" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false"/>
@@ -18,7 +18,7 @@
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
       </KEYS>
     </TABLE>
-    <TABLE NAME="local_vxg_dashboard_right" COMMENT="vxg_dashboard_right table">
+    <TABLE NAME="local_dboard_right" COMMENT="dboard_right table">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="18" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="objecttype" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false"/>

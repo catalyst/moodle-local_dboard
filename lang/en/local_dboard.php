@@ -17,9 +17,9 @@
 defined('MOODLE_INTERNAL') || die;
 
 $string['pluginname']                    = 'Dashboard';
-$string['vxg_dashboard:managedashboard'] = 'Manage dashboard';
+$string['dboard:managedashboard'] = 'Manage dashboard';
 $string['privacy:metadata']              = 'The Dashboard plugin does not store any personal data.';
-$string['dashboard']                     = 'Veloxnet dashboard';
+$string['dashboard']                     = 'Dashboards';
 $string['name']                          = 'Name';
 $string['icon']                          = 'Icon';
 
@@ -39,10 +39,10 @@ $string['col3']           = 'Three Columns';
 $string['colmore']        = 'As many as it fit';
 
 // Events.
-$string['eventvxgdashboardviewed'] = 'Dashboard viewed';
-$string['eventvxgdashboardcreated'] = 'Dashboard created';
-$string['eventvxgdashboarddeleted'] = 'Dashboard deleted';
-$string['eventvxgdashboardupdated'] = 'Dashboard updated';
+$string['eventdboardviewed'] = 'Dashboard viewed';
+$string['eventdboardcreated'] = 'Dashboard created';
+$string['eventdboarddeleted'] = 'Dashboard deleted';
+$string['eventdboardupdated'] = 'Dashboard updated';
 
 // Icon-selection.
 $string['select-icon']   = 'Choose Icon';
@@ -54,10 +54,10 @@ $string['contextlevel_help'] = 'The context level at which this dashboard will b
 $string['context_mismatch']  = 'The dashboard "{$a}" is not available in the specified context.';
 $string['context_norole']    = 'The dashboard "{$a}" is unavailable to users with your role(s). Please contact your site administrator if you believe this is in error.';
 
-$string['privacy:metadata:local_vxg_dashboard_right'] = 'The dashboard';
-$string['privacy:metadata:local_vxg_dashboard_right:userid'] = 'The userid of the dashboard';
-$string['privacy:metadata:local_vxg_dashboard_right:roleid'] = 'The roleid of the dashboard';
-$string['privacy:metadata:local_vxg_dashboard_right:children'] = 'The children of the dashboard';
-$string['privacy:metadata:local_vxg_dashboard_right:righttype'] = 'The righttype of the dashboard';
-$string['privacy:metadata:local_vxg_dashboard_right:timemodified'] = 'The timemodified of the dashboard';
-$string['privacy:metadata:local_vxg_dashboard_right:usermodified'] = 'The usermodified of the dashboard';
+$string['privacy:metadata:local_dboard_right'] = 'The dashboard';
+$string['privacy:metadata:local_dboard_right:userid'] = 'The userid of the dashboard';
+$string['privacy:metadata:local_dboard_right:roleid'] = 'The roleid of the dashboard';
+$string['privacy:metadata:local_dboard_right:children'] = 'The children of the dashboard';
+$string['privacy:metadata:local_dboard_right:righttype'] = 'The righttype of the dashboard';
+$string['privacy:metadata:local_dboard_right:timemodified'] = 'The timemodified of the dashboard';
+$string['privacy:metadata:local_dboard_right:usermodified'] = 'The usermodified of the dashboard';
