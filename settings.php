@@ -17,8 +17,8 @@
 defined('MOODLE_INTERNAL') || die;
 
 $returnurl      = new moodle_url('/admin/search.php');
-$settingurl     = new moodle_url('/local/vxg_dashboard/manage.php', array('returnurl' => $returnurl));
-$managesettings = new admin_externalpage('local_vxg_dashboard',
-    get_string('dashboard', 'local_vxg_dashboard'), $settingurl);
+$settingurl     = new moodle_url('/local/dboard/manage.php', array('returnurl' => $returnurl));
+$managesettings = new admin_externalpage('local_dboard',
+    get_string('dashboard', 'local_dboard'), $settingurl);
 
 $ADMIN->add('root', $managesettings);

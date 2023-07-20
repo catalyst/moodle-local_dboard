@@ -1,6 +1,7 @@
-This plugin package is part of Corporate LMS package developed by Veloxnet and Trimenta Ltd.
-
-If you are interested in the complete inexpensive corporate package, write to lms@veloxnet.hu.
+This plugin helps to create customized dashboard with multi columns or tiled look for all employees or different ones for each departments!
+This plugin is now maintained and enhanced by Catalyst IT
+This plugin package was originally developed by Veloxnet and Trimenta Ltd.
+This is plugin is based on the local_vxg_dashboard plugin, but with extra features.
 
 Requirements
 ------------

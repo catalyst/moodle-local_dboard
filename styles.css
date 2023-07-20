@@ -1,4 +1,4 @@
-.path-veloxnet-dashboard .two-block-columns .block-region {
+.path-dboard .two-block-columns .block-region {
     display: grid;
     grid-column-gap: 10px;
     grid-template-columns: 50% auto;
@@ -7,7 +7,7 @@
 }
 
 @media screen and (max-width: 497px) {
-  .path-veloxnet-dashboard .two-block-columns .block-region {
+  .path-dboard .two-block-columns .block-region {
         display: grid;
         grid-column-gap: 10px;
         grid-template-columns: 100%;
@@ -16,11 +16,11 @@
   }
 }
 
-.path-veloxnet-dashboard .two-block-columns .block-region > span {
+.path-dboard .two-block-columns .block-region > span {
     display: none;
 }
 
-.path-veloxnet-dashboard .three-block-columns .block-region {
+.path-dboard .three-block-columns .block-region {
     display: grid;
     grid-column-gap: 10px;
     grid-template-columns: 33% 32% 33%;
@@ -29,7 +29,7 @@
 }
 
 @media screen and (max-width: 742px) {
-  .path-veloxnet-dashboard .three-block-columns .block-region {
+  .path-dboard .three-block-columns .block-region {
       display: grid;
       grid-column-gap: 10px;
       grid-template-columns: 50% auto;
@@ -39,7 +39,7 @@
 }
 
 @media screen and (max-width: 497px) {
-  .path-veloxnet-dashboard .three-block-columns .block-region {
+  .path-dboard .three-block-columns .block-region {
       display: grid;
       grid-column-gap: 10px;
       grid-template-columns: 100%;
@@ -48,28 +48,28 @@
   }
 }
 
-.path-veloxnet-dashboard .three-block-columns .block-region > span {
+.path-dboard .three-block-columns .block-region > span {
     display: none;
 }
 
-.path-veloxnet-dashboard .auto-fit-block-columns .block-region {
+.path-dboard .auto-fit-block-columns .block-region {
     display: grid;
     grid-column-gap: 10px;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     grid-auto-rows: min-content;
     grid-auto-flow: dense;
-}  
+}
 
-.path-veloxnet-dashboard .auto-fit-block-columns .block-region > span {
+.path-dboard .auto-fit-block-columns .block-region > span {
     display: none;
 }
 
-.path-local-vxg_dashboard .choosed-icon {
+.path-local-dboard .choosed-icon {
     background: wheat;
     border-radius: 8px;
 }
 
-.path-local-vxg_dashboard .modal-body .icon {
+.path-local-dboard .modal-body .icon {
     font-size: 20px;
     width: 20px;
     height: 20px;
@@ -81,8 +81,12 @@
     cursor: pointer;
 }
 
-.path-local-vxg_dashboard .icon.selected_icon {
+.path-local-dboard .icon.selected_icon {
     width: 30px;
     height: 30px;
     font-size: 25px;
 }
+
+.disable-editmode .editmode-switch-form {
+    display: none !important;
+  }

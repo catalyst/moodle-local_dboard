@@ -14,8 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-use local_vxg_dashboard\event\vxg_dashboard_created;
-use local_vxg_dashboard\event\vxg_dashboard_updated;
+use local_dboard\event\dboard_created;
+use local_dboard\event\dboard_updated;
 
 require_once('../../config.php');
 
@@ -25,26 +25,26 @@ $id        = optional_param('id', 0, PARAM_INT);
 $returnurl = optional_param('returnurl', '', PARAM_LOCALURL);
 
 require_login();
-require_capability('local/vxg_dashboard:managedashboard', context_system::instance());
+require_capability('local/dboard:managedashboard', context_system::instance());
 
 if ($id > 0) {
-    $heading = get_string('edit', 'local_vxg_dashboard');
+    $heading = get_string('edit', 'local_dboard');
 } else {
-    $heading = get_string('add_new', 'local_vxg_dashboard');
+    $heading = get_string('add_new', 'local_dboard');
 }
 $PAGE->set_context(context_system::instance());
 $PAGE->set_title($heading);
 $PAGE->set_heading($heading);
-$PAGE->set_url('/local/vxg_dashboard/edit.php', array('id' => $id));
+$PAGE->set_url('/local/dboard/edit.php', array('id' => $id));
 $PAGE->set_pagelayout('incourse');
-$PAGE->navbar->add(get_string('manage', 'local_vxg_dashboard'), '/local/vxg_dashboard/manage.php');
+$PAGE->navbar->add(get_string('manage', 'local_dboard'), '/local/dboard/manage.php');
 
-$PAGE->requires->js_call_amd('local_vxg_dashboard/icon_picker', 'init');
-$PAGE->requires->css('/local/vxg_dashboard/styles.css');
+$PAGE->requires->js_call_amd('local_dboard/icon_picker', 'init');
+$PAGE->requires->css('/local/dboard/styles.css');
 
 if ($id > 0) {
-    $dashboardsettings = $DB->get_record('local_vxg_dashboard', array('id' => $id));
-    $selectedroles     = $DB->get_records('local_vxg_dashboard_right', array('objectid' => $id, 'objecttype' => 'dashboard'));
+    $dashboardsettings = $DB->get_record('local_dboard', array('id' => $id));
+    $selectedroles     = $DB->get_records('local_dboard_right', array('objectid' => $id, 'objecttype' => 'dashboard'));
 }
 
 $iconname = 't/editstring';
@@ -55,10 +55,10 @@ if (isset($dashboardsettings) && !empty($dashboardsettings->icon)) {
     $iconcomp = $iconarr[0];
 }
 
-$mform = new \local_vxg_dashboard\form\manage_dashboard_form(null, array('iconname' => $iconname, 'iconcomp' => $iconcomp));
+$mform = new \local_dboard\form\manage_dashboard_form(null, array('iconname' => $iconname, 'iconcomp' => $iconcomp));
 
 $mform->set_data(array('id' => $id, 'returnurl' => $returnurl));
-$redirecturl = new moodle_url('/local/vxg_dashboard/manage.php');
+$redirecturl = new moodle_url('/local/dboard/manage.php');
 if ($mform->is_cancelled()) {
     $redirecturl->params(array('returnurl' => $returnurl));
     redirect($redirecturl);
@@ -72,7 +72,7 @@ if ($mform->is_cancelled()) {
         $insert->dashboard_name = $data->dashboard_name;
         $insert->layout         = $data->layout;
         $insert->showinmenu     = $data->showinmenu;
-        $DB->delete_records('local_vxg_dashboard_right', array('objecttype' => 'dashboard', 'objectid' => $insert->id));
+        $DB->delete_records('local_dboard_right', array('objecttype' => 'dashboard', 'objectid' => $insert->id));
         if (isset($data->roles)) {
             foreach ($data->roles as $roleid) {
                 $role               = new stdClass();
@@ -81,17 +81,17 @@ if ($mform->is_cancelled()) {
                 $role->roleid       = $roleid;
                 $role->timemodified = date("Y-m-d H:i:s");
                 $role->usermodified = $USER->id;
-                $DB->insert_record('local_vxg_dashboard_right', $role);
+                $DB->insert_record('local_dboard_right', $role);
             }
         }
         $insert->icon = $data->icon;
         $insert->contextlevel = $data->contextlevel;
 
-        $newid = $DB->update_record('local_vxg_dashboard', $insert);
+        $newid = $DB->update_record('local_dboard', $insert);
 
         if ($insert->layout != 'classic') {
             $blocks = $DB->get_records('block_instances',
-                array('pagetypepattern' => 'veloxnet-dashboard-' . $dashboardsettings->id), 'id');
+                array('pagetypepattern' => 'dboard-' . $dashboardsettings->id), 'id');
 
             foreach ($blocks as $block) {
                 $block->defaultregion = 'content';
@@ -99,7 +99,7 @@ if ($mform->is_cancelled()) {
             }
         } else {
             $blocks = $DB->get_records('block_instances',
-                array('pagetypepattern' => 'veloxnet-dashboard-' . $dashboardsettings->id), 'id');
+                array('pagetypepattern' => 'dboard-' . $dashboardsettings->id), 'id');
             $counter = 0;
             foreach ($blocks as $block) {
                 if ($counter % 2 == 0) {
@@ -110,9 +110,9 @@ if ($mform->is_cancelled()) {
             }
         }
 
-        // Trigger event, vxg dashboard updated.
+        // Trigger event, dboard dashboard updated.
         $eventparams = array('context' => $PAGE->context, 'objectid' => $id);
-        $event = vxg_dashboard_updated::create($eventparams);
+        $event = dboard_updated::create($eventparams);
         $event->trigger();
 
     } else {
@@ -123,14 +123,14 @@ if ($mform->is_cancelled()) {
         $insert->icon           = $data->icon;
         $insert->contextlevel   = $data->contextlevel;
 
-        $newid = $DB->insert_record('local_vxg_dashboard', $insert);
+        $newid = $DB->insert_record('local_dboard', $insert);
 
         /* Create new access roles, linked to new dashboard.
          *
          * If the $id is 0, there shouldn't be anything here.
          * Leaving delete_records() call in for a sanity check.
          */
-        $DB->delete_records('local_vxg_dashboard_right', array('objecttype' => 'dashboard', 'objectid' => $data->id));
+        $DB->delete_records('local_dboard_right', array('objecttype' => 'dashboard', 'objectid' => $data->id));
         foreach ($data->roles as $roleid) {
             $role               = new stdClass();
             $role->objecttype   = 'dashboard';
@@ -138,12 +138,12 @@ if ($mform->is_cancelled()) {
             $role->roleid       = $roleid;
             $role->timemodified = date("Y-m-d H:i:s");
             $role->usermodified = $USER->id;
-            $DB->insert_record('local_vxg_dashboard_right', $role);
+            $DB->insert_record('local_dboard_right', $role);
         }
 
-        // Trigger event, vxg dashboard created.
+        // Trigger event, dboard dashboard created.
         $eventparams = array('context' => $PAGE->context, 'objectid' => $newid);
-        $event = vxg_dashboard_created::create($eventparams);
+        $event = dboard_created::create($eventparams);
         $event->trigger();
     }
     redirect($redirecturl);

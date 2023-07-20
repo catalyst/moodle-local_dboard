@@ -18,14 +18,14 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once(__DIR__ . '/locallib.php');
 
-function local_vxg_dashboard_extend_settings_navigation(settings_navigation $settingsnav, context $context) {
+function local_dboard_extend_settings_navigation(settings_navigation $settingsnav, context $context) {
     return; // Not used anymore!
 }
 
-function local_vxg_dashboard_extend_navigation(global_navigation $nav) {
+function local_dboard_extend_navigation(global_navigation $nav) {
     global $CFG, $PAGE, $USER, $DB;
 
-    $dashboardsettings = $DB->get_records('local_vxg_dashboard');
+    $dashboardsettings = $DB->get_records('local_dboard');
 
     foreach ($dashboardsettings as $dashboardsetting) {
 
@@ -34,21 +34,21 @@ function local_vxg_dashboard_extend_navigation(global_navigation $nav) {
         }
 
         // Get roles for dashboard.
-        $userroles      = local_vxg_dashboard_get_user_role_ids();
+        $userroles      = local_dboard_get_user_role_ids();
         $dashboardroles = array();
-        $dashboardroles = $DB->get_records('local_vxg_dashboard_right',
+        $dashboardroles = $DB->get_records('local_dboard_right',
         array('objectid' => $dashboardsetting->id, 'objecttype' => 'dashboard'));
         // Check user has roles.
-        $userhasrole = local_vxg_dashboard_user_role_check($dashboardsetting->id);
+        $userhasrole = local_dboard_user_role_check($dashboardsetting->id);
 
         $iconarr = explode('/', $dashboardsetting->icon, 2);
         // Set attributes.
         if ($dashboardsetting->dashboard_name == null && $dashboardsetting->dashboard_name == '') {
-            $name = get_string('dashboard', 'local_vxg_dashboard');
+            $name = get_string('dashboard', 'local_dboard');
         } else {
             $name = $dashboardsetting->dashboard_name;
         }
-        $url = new moodle_url('/local/vxg_dashboard/index.php', array('id' => $dashboardsetting->id));
+        $url = new moodle_url('/local/dboard/index.php', array('id' => $dashboardsetting->id));
         if (isset($dashboardsetting->icon) && !empty($dashboardsetting->icon)) {
             $icon = new pix_icon($iconarr[1], $name, $iconarr[0]);
         } else {
@@ -61,7 +61,7 @@ function local_vxg_dashboard_extend_navigation(global_navigation $nav) {
             $url,
             navigation_node::NODETYPE_LEAF,
             $name,
-            'vxg_dashboard' . $dashboardsetting->id,
+            'dboard' . $dashboardsetting->id,
             $icon
         );
 

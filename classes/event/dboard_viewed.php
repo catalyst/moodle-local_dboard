@@ -15,40 +15,40 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * The dashboard deleted event.
+ * The dashboard viewed event.
  *
- * @package    local_vxg_dashboard
+ * @package    local_dboard
  * @copyright  2021 Alex Morris
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_vxg_dashboard\event;
+namespace local_dboard\event;
 
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * The dashboard deleted event class.
+ * The dashboard viewed event class.
  *
- * @package     local_vxg_dashboard
+ * @package     local_dboard
  * @copyright   2021 Alex Morris
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class vxg_dashboard_deleted extends \core\event\base {
+class dboard_viewed extends \core\event\base {
 
     /**
      * Init method.
      */
     protected function init() {
-        $this->data['objecttable'] = 'local_vxg_dashboard';
-        $this->data['crud'] = 'd';
+        $this->data['objecttable'] = 'local_dboard';
+        $this->data['crud'] = 'r';
         $this->data['edulevel'] = self::LEVEL_OTHER;
     }
 
     public static function get_name() {
-        return get_string('eventvxgdashboarddeleted', 'local_vxg_dashboard');
+        return get_string('eventdboardviewed', 'local_dboard');
     }
 
     public function get_description() {
-        return "The user with id '$this->userid' deleted the vxg dashboard with id `$this->objectid`.";
+        return "The user with id '$this->userid' viewed the dboard dashboard with id `$this->objectid`.";
     }
 }

@@ -14,12 +14,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace local_vxg_dashboard\form;
+namespace local_dboard\form;
 
 defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->libdir . '/formslib.php');
-require_once($CFG->dirroot . '/local/vxg_dashboard/locallib.php');
+require_once($CFG->dirroot . '/local/dboard/locallib.php');
 
 class manage_dashboard_form extends \moodleform
 {
@@ -29,19 +29,19 @@ class manage_dashboard_form extends \moodleform
 
         $mform = $this->_form;
 
-        $roles    = local_vxg_dashboard_get_assignable_roles();
+        $roles    = local_dboard_get_assignable_roles();
         $size     = count($roles);
         $iconname = $this->_customdata['iconname'];
         $iconcomp = $this->_customdata['iconcomp'];
 
         $styles = array('style' => 'width:50%;');
-        $mform->addElement('text', 'dashboard_name', get_string('name', 'local_vxg_dashboard'), $styles);
+        $mform->addElement('text', 'dashboard_name', get_string('name', 'local_dboard'), $styles);
         $mform->setType('dashboard_name', PARAM_TEXT);
 
-        $coltwotring   = get_string('col2', 'local_vxg_dashboard');
-        $colthreetring = get_string('col3', 'local_vxg_dashboard');
-        $colmoretring  = get_string('colmore', 'local_vxg_dashboard');
-        $classictring  = get_string('classic', 'local_vxg_dashboard');
+        $coltwotring   = get_string('col2', 'local_dboard');
+        $colthreetring = get_string('col3', 'local_dboard');
+        $colmoretring  = get_string('colmore', 'local_dboard');
+        $classictring  = get_string('classic', 'local_dboard');
 
         $layouts = [
             'classic' => $classictring,
@@ -49,8 +49,8 @@ class manage_dashboard_form extends \moodleform
             'col3'    => $colthreetring,
             'colmore' => $colmoretring];
 
-        $select = $mform->addElement('select', 'layout', get_string('layout', 'local_vxg_dashboard'), $layouts);
-        $mform->addHelpButton('layout', 'layout', 'local_vxg_dashboard');
+        $select = $mform->addElement('select', 'layout', get_string('layout', 'local_dboard'), $layouts);
+        $mform->addHelpButton('layout', 'layout', 'local_dboard');
         $select->setSize(4);
         $select->setSelected('classic');
 
@@ -58,17 +58,17 @@ class manage_dashboard_form extends \moodleform
         $icongroup[] = &$mform->createElement('html', $OUTPUT->pix_icon($iconname, 'icon', $iconcomp,
             array('class' => 'selected_icon')));
         $icongroup[] = &$mform->createElement('html', '<button type="button" class="btn btn-primary" data-key="icon_picker">' .
-            get_string('select-icon', 'local_vxg_dashboard') . '</button>');
-        $mform->addGroup($icongroup, 'icongroup', get_string('icon', 'local_vxg_dashboard'), ' ', false);
+            get_string('select-icon', 'local_dboard') . '</button>');
+        $mform->addGroup($icongroup, 'icongroup', get_string('icon', 'local_dboard'), ' ', false);
 
         $mform->addElement('hidden', 'icon', $iconcomp . '/' . $iconname);
         $mform->setType('icon', PARAM_RAW);
 
-        $mform->addElement('advcheckbox', 'showinmenu', get_string('showinmenu', 'local_vxg_dashboard'));
+        $mform->addElement('advcheckbox', 'showinmenu', get_string('showinmenu', 'local_dboard'));
         $mform->setType('showinmenu', PARAM_INT);
 
         $select = $mform->addElement('select', 'roles',
-            get_string('roles', 'local_vxg_dashboard'), $roles);
+            get_string('roles', 'local_dboard'), $roles);
         $select->setMultiple(true);
         $select->setSize($size);
 
@@ -79,10 +79,10 @@ class manage_dashboard_form extends \moodleform
         });
 
         $mform->addElement('select', 'contextlevel',
-            get_string('contextlevel', 'local_vxg_dashboard'), $contextlevels);
+            get_string('contextlevel', 'local_dboard'), $contextlevels);
         $mform->setDefault('contextlevel', CONTEXT_SYSTEM);
         $mform->setType('contextlevel', PARAM_INT);
-        $mform->addHelpButton('contextlevel', 'contextlevel', 'local_vxg_dashboard');
+        $mform->addHelpButton('contextlevel', 'contextlevel', 'local_dboard');
 
         $mform->addElement('hidden', 'id', 0);
         $mform->setType('id', PARAM_INT);

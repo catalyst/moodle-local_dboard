@@ -17,38 +17,38 @@
 /**
  * The dashboard updated event.
  *
- * @package    local_vxg_dashboard
+ * @package    local_dboard
  * @copyright  2021 Alex Morris
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_vxg_dashboard\event;
+namespace local_dboard\event;
 
 defined('MOODLE_INTERNAL') || die();
 
 /**
  * The dashboard updated event class.
  *
- * @package     local_vxg_dashboard
+ * @package     local_dboard
  * @copyright   2021 Alex Morris
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class vxg_dashboard_updated extends \core\event\base {
+class dboard_updated extends \core\event\base {
 
     /**
      * Init method.
      */
     protected function init() {
-        $this->data['objecttable'] = 'local_vxg_dashboard';
+        $this->data['objecttable'] = 'local_dboard';
         $this->data['crud'] = 'u';
         $this->data['edulevel'] = self::LEVEL_OTHER;
     }
 
     public static function get_name() {
-        return get_string('eventvxgdashboardupdated', 'local_vxg_dashboard');
+        return get_string('eventdboardupdated', 'local_dboard');
     }
 
     public function get_description() {
-        return "The user with id '$this->userid' updated the vxg dashboard with id `$this->objectid`.";
+        return "The user with id '$this->userid' updated the dboard dashboard with id `$this->objectid`.";
     }
 }

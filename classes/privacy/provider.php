@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace local_vxg_dashboard\privacy;
+namespace local_dboard\privacy;
 
 use core_privacy\local\metadata\collection;
 use core_privacy\local\request\approved_contextlist;
@@ -41,16 +41,16 @@ class provider implements
     public static function get_metadata(collection $collection) : collection {
 
         $collection->add_database_table(
-            'local_vxg_dashboard_right',
+            'local_dboard_right',
              [
-                'userid' => 'privacy:metadata:local_vxg_dashboard_right:userid',
-                'roleid' => 'privacy:metadata:local_vxg_dashboard_right:roleid',
-                'children' => 'privacy:metadata:local_vxg_dashboard_right:children',
-                'righttype' => 'privacy:metadata:local_vxg_dashboard_right:righttype',
-                'timemodified' => 'privacy:metadata:local_vxg_dashboard_right:timemodified',
-                'usermodified' => 'privacy:metadata:local_vxg_dashboard_right:usermodified',
+                'userid' => 'privacy:metadata:local_dboard_right:userid',
+                'roleid' => 'privacy:metadata:local_dboard_right:roleid',
+                'children' => 'privacy:metadata:local_dboard_right:children',
+                'righttype' => 'privacy:metadata:local_dboard_right:righttype',
+                'timemodified' => 'privacy:metadata:local_dboard_right:timemodified',
+                'usermodified' => 'privacy:metadata:local_dboard_right:usermodified',
              ],
-            'privacy:metadata:local_vxg_dashboard_right'
+            'privacy:metadata:local_dboard_right'
         );
         return $collection;
     }

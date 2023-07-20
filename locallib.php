@@ -15,16 +15,16 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Vxg dashboard
+ * dboard dashboard
  *
- * @package   local_vxg_dashboard
+ * @package   local_dboard
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @copyright http://veloxnet.hu <lms@veloxnet.hu>
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-function local_vxg_dashboard_reset_default_dashboard($dashboardid) {
+function local_dboard_reset_default_dashboard($dashboardid) {
     global $CFG, $DB;
 
     // Default settings.
@@ -33,16 +33,16 @@ function local_vxg_dashboard_reset_default_dashboard($dashboardid) {
     $defsettings->layout     = 'mydashboard';
     $defsettings->showinmenu = '1';
 
-    $settingsid = $DB->update_record('local_vxg_dashboard', $defsettings);
+    $settingsid = $DB->update_record('local_dboard', $defsettings);
 
-    local_vxg_dashboard_delete_dashboard_blocks($dashboardid);
+    local_dboard_delete_dashboard_blocks($dashboardid);
 }
 
-function local_vxg_dashboard_delete_dashboard_blocks($dashboardid = null) {
+function local_dboard_delete_dashboard_blocks($dashboardid = null) {
     global $CFG, $DB;
 
     $select = 'pagetypepattern = ?';
-    $params = ['veloxnet-dashboard-' . $dashboardid];
+    $params = ['dboard-' . $dashboardid];
 
     $blocks = $DB->get_records_select('block_instances', $select, $params);
 
@@ -52,14 +52,14 @@ function local_vxg_dashboard_delete_dashboard_blocks($dashboardid = null) {
 }
 
 // Called when plugin is uninstalled.
-function local_vxg_dashboard_plugin_uninstall() {
+function local_dboard_plugin_uninstall() {
     global $CFG, $DB;
 
     $likesql = $DB->sql_like('pagetypepattern', ':type', false);
     $select   = $likesql . ' OR pagetypepattern = :manage
                                         OR pagetypepattern = :edit
                                         OR pagetypepattern = :delete';
-    $params['type']   = "veloxnet-dashboard-%";
+    $params['type']   = "dboard-%";
     $params['manage'] = "local-dashboard-manage";
     $params['edit']   = "local-dashboard-edit";
     $params['delete'] = "local-dashboard-delete";
@@ -71,7 +71,7 @@ function local_vxg_dashboard_plugin_uninstall() {
     }
 }
 
-function local_vxg_dashboard_get_assignable_roles() {
+function local_dboard_get_assignable_roles() {
     global $DB;
 
     $roleids = $DB->get_fieldset_select('role_context_levels', 'DISTINCT roleid',
@@ -93,7 +93,7 @@ function local_vxg_dashboard_get_assignable_roles() {
  * @param int|null $contextid (optional) Get role IDs within a specific context.
  * @return array An array of role IDs.
  */
-function local_vxg_dashboard_get_user_role_ids($contextid=null) {
+function local_dboard_get_user_role_ids($contextid=null) {
     global $USER, $COURSE;
 
     if (empty($contextid)) {
@@ -112,9 +112,9 @@ function local_vxg_dashboard_get_user_role_ids($contextid=null) {
 
 }
 
-function local_vxg_dashboard_get_access_roles($dashboardid) {
+function local_dboard_get_access_roles($dashboardid) {
     global $DB;
-    $roles      = $DB->get_records('local_vxg_dashboard_right', array('objectid' => $dashboardid, 'objecttype' => 'dashboard'));
+    $roles      = $DB->get_records('local_dboard_right', array('objectid' => $dashboardid, 'objecttype' => 'dashboard'));
     $roleids    = array_column($roles, 'roleid');
     $rolenames = $DB->get_records_list('role', 'id', $roleids, $sort = '', $fields = 'shortname');
     return implode(', ', array_column($rolenames, 'shortname'));
@@ -128,13 +128,13 @@ function local_vxg_dashboard_get_access_roles($dashboardid) {
  * @param int $contextid Check in a specific context.
  * @return bool Whether the user has a role
  */
-function local_vxg_dashboard_user_role_check($dashboardid, $contextid=SYSCONTEXTID) {
+function local_dboard_user_role_check($dashboardid, $contextid=SYSCONTEXTID) {
     global $DB, $USER;
 
-    $dashboardroles = $DB->get_records('local_vxg_dashboard_right',
+    $dashboardroles = $DB->get_records('local_dboard_right',
         array('objectid' => $dashboardid, 'objecttype' => 'dashboard'));
 
-    $userroles = local_vxg_dashboard_get_user_role_ids($contextid);
+    $userroles = local_dboard_get_user_role_ids($contextid);
 
     if (!empty($dashboardroles)) {
         foreach ($dashboardroles as $dashboardrole) {
