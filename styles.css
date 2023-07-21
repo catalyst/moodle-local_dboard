@@ -89,4 +89,19 @@
 
 .disable-editmode .editmode-switch-form {
     display: none !important;
-  }
+}
+
+/* Hide user icon on user dashboard pages. */
+.path-dboard #page-header .page-header-image {
+    display: none;
+}
+
+/* ACE engagement analytics - header message and contact button */
+.path-dboard #page-header .header-button-group {
+    display: none !important; /* stylelint-disable-line declaration-no-important */
+}
+
+/* ACE engagement analytics - header message and contact button */
+.path-dboard #page-header .page-context-header .page-header-headings {
+    margin-top: 0;
+}
