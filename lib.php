@@ -14,14 +14,35 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+/**
+ * Global plugin functions.
+ *
+ * @package   local_dboard
+ * @copyright Catalyst IT
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
 defined('MOODLE_INTERNAL') || die();
 
 require_once(__DIR__ . '/locallib.php');
 
+/**
+ * Not used anymore!
+ *
+ * @param $settingsnav
+ * @param $context
+ *
+ * @return
+ */
 function local_dboard_extend_settings_navigation(settings_navigation $settingsnav, context $context) {
     return; // Not used anymore!
 }
 
+/**
+ * Get status checks for tool_objectfs.
+ *
+ * @param $nav
+ */
 function local_dboard_extend_navigation(global_navigation $nav) {
     global $CFG, $PAGE, $USER, $DB;
 

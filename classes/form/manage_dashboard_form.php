@@ -14,6 +14,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+/**
+ * Manage dashabord form for the local_dboard plugin.
+ *
+ * @package   local_dboard
+ * @copyright Catalyst IT
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
 namespace local_dboard\form;
 
 defined('MOODLE_INTERNAL') || die();

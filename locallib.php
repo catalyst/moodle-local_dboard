@@ -15,15 +15,20 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * dboard dashboard
+ * Global plugin functions.
  *
  * @package   local_dboard
+ * @copyright Catalyst IT
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @copyright http://veloxnet.hu <lms@veloxnet.hu>
  */
 
 defined('MOODLE_INTERNAL') || die();
 
+/**
+ * Get dashboard id for local_dboard.
+ *
+ * @param int $dashboardid dashboard id
+ */
 function local_dboard_reset_default_dashboard($dashboardid) {
     global $CFG, $DB;
 
@@ -38,6 +43,11 @@ function local_dboard_reset_default_dashboard($dashboardid) {
     local_dboard_delete_dashboard_blocks($dashboardid);
 }
 
+/**
+ * Delete dashboard blocks in local_dboard.
+ *
+ * @param int|null $dashboardid dashboard id
+ */
 function local_dboard_delete_dashboard_blocks($dashboardid = null) {
     global $CFG, $DB;
 
@@ -71,6 +81,11 @@ function local_dboard_plugin_uninstall() {
     }
 }
 
+/**
+ * Get assignable roles in local_dboard.
+ *
+ * @return array of role ids and names.
+ */
 function local_dboard_get_assignable_roles() {
     global $DB;
 
@@ -112,6 +127,12 @@ function local_dboard_get_user_role_ids($contextid=null) {
 
 }
 
+/**
+ * Get access rolesfor dashboard user.
+ *
+ * @param int $dashboardid.
+ * @return array An array of role names.
+ */
 function local_dboard_get_access_roles($dashboardid) {
     global $DB;
     $roles      = $DB->get_records('local_dboard_right', array('objectid' => $dashboardid, 'objecttype' => 'dashboard'));

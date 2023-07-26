@@ -18,7 +18,8 @@
  * The dashboard updated event.
  *
  * @package    local_dboard
- * @copyright  2021 Alex Morris
+ * @author     Alex Morris alex.morris@catalyst.net.nz
+ * @copyright  Catalyst IT
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
