@@ -11,9 +11,9 @@ This plugin package was originally developed by Veloxnet and Trimenta Ltd. It is
 
 ## Branches
 
-| Moodle version   | Branch                                                            | PHP       |
-|------------------|-------------------------------------------------------------------|-----------|
-| Moodle 3.4 +     | [main](https://github.com/catalyst/moodle-local_dboard/tree/main) | 7.1 - 7.4 |
+| Moodle version             | Branch                                                                        | PHP       |
+|----------------------------|-------------------------------------------------------------------------------|-----------|
+| Moodle 3.4 and highter     | [MOODLE_34_STABLE](https://github.com/catalyst/moodle-local_dboard/tree/MOODLE_34_STABLE) | 7.1 - 7.4 |
 
 ## Installation
 
