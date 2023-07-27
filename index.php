@@ -57,10 +57,9 @@ if ($contextid == SYSCONTEXTID) {
     $systemcontextid = 1;
 }
 $canmanage = has_capability('local/dboard:managedashboard', context_system::instance());
+
 // If a user context level is specified, pick up this user's context by default.
-if ($canmanage && $contextid == SYSCONTEXTID && !empty($USER->editing)) {
-    // This is an admin user with editing turned on - let them edit the page.
-} else if ($contextid == SYSCONTEXTID && $dashboardsettings->contextlevel == CONTEXT_USER && !$canmanage) {
+if ($contextid == SYSCONTEXTID && $dashboardsettings->contextlevel == CONTEXT_USER && !$canmanage) {
     $context = context_user::instance($USER->id);
     $contextid = $context->id;
 }
@@ -76,14 +75,7 @@ if (!is_siteadmin() && !local_dboard_user_role_check($id, $contextid)) {
     redirect($redirecturl, get_string('context_norole', 'local_dboard', $dashboard),
         null, \core\output\notification::NOTIFY_ERROR);
 }
-/*
-// UC Check permissions - this makes it difficult to use dashboard plugin with non-ace things.
-if ($context->contextlevel == CONTEXT_USER && $context->instanceid == $USER->id) {
-    require_capability('local/ace:viewown', $context);
-} else {
-    require_capability('local/ace:view', $context);
-}
-*/
+
 $userid = $USER->id;
 $header = $dashboard;
 $pagetitle = $dashboard;
@@ -95,11 +87,11 @@ if ($contextid != SYSCONTEXTID) {
 }
 $PAGE->set_context($context);
 $PAGE->set_url('/local/dboard/index.php', $params);
-//$PAGE->set_pagelayout('mydashboard'); // UC Change - use single column output and don't inherit custom dashboard css.
+
 $PAGE->set_pagetype('dboard-' . $dashboardsettings->id);
 $PAGE->blocks->add_region('content');
 $PAGE->set_title($pagetitle);
-if ($PAGE->context->contextlevel == CONTEXT_USER) { // UC Change improve header.
+if ($PAGE->context->contextlevel == CONTEXT_USER) {
     if ($USER->id == $PAGE->context->instanceid) {
         $header = fullname($USER) . ' - '. $header;
     } else {

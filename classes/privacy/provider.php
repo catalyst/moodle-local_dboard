@@ -30,15 +30,17 @@ use core_privacy\local\request\contextlist;
 use core_privacy\local\request\userlist;
 use core_privacy\local\request\approved_userlist;
 
-defined('MOODLE_INTERNAL') || die();
-
-// This plugin does store personal user data.
+/**
+ * This plugin does store personal user data.
+ *
+ * @package     local_dboard
+ * @copyright   2021 Alex Morris
+ * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class provider implements
     \core_privacy\local\metadata\provider,
     \core_privacy\local\request\core_userlist_provider,
-    \core_privacy\local\request\plugin\provider
- {
-
+    \core_privacy\local\request\plugin\provider {
 
     /**
      * Returns metadata.

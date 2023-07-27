@@ -7,13 +7,13 @@
 }
 
 @media screen and (max-width: 497px) {
-  .path-dboard .two-block-columns .block-region {
-        display: grid;
-        grid-column-gap: 10px;
-        grid-template-columns: 100%;
-        grid-auto-rows: min-content;
-        grid-auto-flow: dense;
-  }
+    .path-dboard .two-block-columns .block-region {
+            display: grid;
+            grid-column-gap: 10px;
+            grid-template-columns: 100%;
+            grid-auto-rows: min-content;
+            grid-auto-flow: dense;
+    }
 }
 
 .path-dboard .two-block-columns .block-region > span {
@@ -29,23 +29,23 @@
 }
 
 @media screen and (max-width: 742px) {
-  .path-dboard .three-block-columns .block-region {
-      display: grid;
-      grid-column-gap: 10px;
-      grid-template-columns: 50% auto;
-      grid-auto-rows: min-content;
-      grid-auto-flow: dense;
-  }
+    .path-dboard .three-block-columns .block-region {
+        display: grid;
+        grid-column-gap: 10px;
+        grid-template-columns: 50% auto;
+        grid-auto-rows: min-content;
+        grid-auto-flow: dense;
+    }
 }
 
 @media screen and (max-width: 497px) {
-  .path-dboard .three-block-columns .block-region {
-      display: grid;
-      grid-column-gap: 10px;
-      grid-template-columns: 100%;
-      grid-auto-rows: min-content;
-      grid-auto-flow: dense;
-  }
+    .path-dboard .three-block-columns .block-region {
+        display: grid;
+        grid-column-gap: 10px;
+        grid-template-columns: 100%;
+        grid-auto-rows: min-content;
+        grid-auto-flow: dense;
+    }
 }
 
 .path-dboard .three-block-columns .block-region > span {
@@ -88,7 +88,7 @@
 }
 
 .disable-editmode .editmode-switch-form {
-    display: none !important;
+    display: none !important; /* stylelint-disable-line declaration-no-important */
 }
 
 /* Hide user icon on user dashboard pages. */

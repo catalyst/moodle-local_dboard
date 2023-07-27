@@ -32,7 +32,7 @@ define([
     init: function () {
       var icon_pickerlink = $("[data-key=icon_picker]");
       var title = Str.get_string("iconselection", "local_dboard");
-
+      var fetchMap = '';
       fetchMap = Ajax.call([
         {
           methodname: "core_output_load_fontawesome_icon_map",
@@ -75,7 +75,7 @@ define([
             $(this).addClass("choosed-icon");
           });
 
-          modal.getRoot().on(ModalEvents.save, function (e) {
+          modal.getRoot().on(ModalEvents.save, function () {
             var selectedname = $(".choosed-icon").attr("title");
             var clone = $(".choosed-icon").clone();
             $(".selected_icon").replaceWith(clone);

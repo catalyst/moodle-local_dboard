@@ -27,21 +27,9 @@ defined('MOODLE_INTERNAL') || die();
 require_once(__DIR__ . '/locallib.php');
 
 /**
- * Not used anymore!
- *
- * @param array $settingsnav
- * @param array $context
- *
- * @return
- */
-function local_dboard_extend_settings_navigation(settings_navigation $settingsnav, context $context) {
-    return; // Not used anymore!
-}
-
-/**
  * Get status checks for tool_objectfs.
  *
- * @param array $nav
+ * @param global_navigation $nav
  */
 function local_dboard_extend_navigation(global_navigation $nav) {
     global $CFG, $PAGE, $USER, $DB;

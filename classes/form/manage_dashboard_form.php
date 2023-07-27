@@ -32,8 +32,7 @@ require_once($CFG->dirroot . '/local/dboard/locallib.php');
 /**
  * Class manage dashboard form.
  */
-class manage_dashboard_form extends \moodleform
-{
+class manage_dashboard_form extends \moodleform {
 
     /**
      * Define manage dashboard form.
