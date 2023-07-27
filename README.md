@@ -1,6 +1,6 @@
 # moodle-local_dboad
 
-![GitHub Workflow Status (branch)](https://img.shields.io/github/actions/workflow/status/catalyst/moodle-local_dboard/ci.yml?label=ci&branch=main)
+![GitHub Workflow Status (branch)](https://img.shields.io/github/actions/workflow/status/catalyst/moodle-local_dboard/ci.yml?label=ci&branch=MOODLE_34_STABLE)
 ## What is this?
 
 This is a Moodle plugin which helps to create customized dashboard with multi columns or tiled look for all employees or different ones for each departments!
