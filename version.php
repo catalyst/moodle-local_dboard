@@ -27,6 +27,6 @@ defined('MOODLE_INTERNAL') || die();
 $plugin->version   = 2021102100;
 $plugin->release   = 2021102100;
 $plugin->requires  = 2017111309;
-$plugin->supported  = [34, 402];
+$plugin->supported  = [34, 401];
 $plugin->component = 'local_dboard';
 $plugin->maturity  = MATURITY_STABLE;
