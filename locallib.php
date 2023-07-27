@@ -61,7 +61,10 @@ function local_dboard_delete_dashboard_blocks($dashboardid = null) {
     }
 }
 
-// Called when plugin is uninstalled.
+/**
+ * Uninstall plugin local_dboard.
+ *
+ */
 function local_dboard_plugin_uninstall() {
     global $CFG, $DB;
 

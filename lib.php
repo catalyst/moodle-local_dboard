@@ -29,8 +29,8 @@ require_once(__DIR__ . '/locallib.php');
 /**
  * Not used anymore!
  *
- * @param $settingsnav
- * @param $context
+ * @param array $settingsnav
+ * @param array $context
  *
  * @return
  */
@@ -41,7 +41,7 @@ function local_dboard_extend_settings_navigation(settings_navigation $settingsna
 /**
  * Get status checks for tool_objectfs.
  *
- * @param $nav
+ * @param array $nav
  */
 function local_dboard_extend_navigation(global_navigation $nav) {
     global $CFG, $PAGE, $USER, $DB;

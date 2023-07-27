@@ -24,6 +24,11 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+/**
+ * Upgrade.
+ *
+ * @param int $oldversion
+ */
 function xmldb_local_dboard_upgrade($oldversion) {
     global $DB;
 
@@ -40,7 +45,7 @@ function xmldb_local_dboard_upgrade($oldversion) {
             $dbman->add_field($table, $field);
         }
 
-        // dboard savepoint reached.
+        // Plugin dboard savepoint reached.
         upgrade_plugin_savepoint(true, 2021102100, 'local', 'dboard');
     }
 

@@ -26,6 +26,11 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once(__DIR__ . '/../locallib.php');
 
+/**
+ * Uninstall.
+ *
+ * @return bool
+ */
 function xmldb_local_dboard_uninstall() {
     global $CFG, $DB;
     local_dboard_plugin_uninstall();

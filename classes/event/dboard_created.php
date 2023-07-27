@@ -45,10 +45,20 @@ class dboard_created extends \core\event\base {
         $this->data['edulevel'] = self::LEVEL_OTHER;
     }
 
+    /**
+     * Return localised event name.
+     *
+     * @return string
+     */
     public static function get_name() {
         return get_string('eventdboardcreated', 'local_dboard');
     }
 
+    /**
+     * Returns non-localised event description with id's.
+     *
+     * @return string
+     */
     public function get_description() {
         return "The user with id '$this->userid' created the dboard dashboard with id `$this->objectid`.";
     }

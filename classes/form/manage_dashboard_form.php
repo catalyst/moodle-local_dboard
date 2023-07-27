@@ -29,9 +29,15 @@ defined('MOODLE_INTERNAL') || die();
 require_once($CFG->libdir . '/formslib.php');
 require_once($CFG->dirroot . '/local/dboard/locallib.php');
 
+/**
+ * Class manage dashboard form.
+ */
 class manage_dashboard_form extends \moodleform
 {
 
+    /**
+     * Define manage dashboard form.
+     */
     public function definition() {
         global $CFG, $OUTPUT;
 
