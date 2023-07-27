@@ -131,8 +131,7 @@ function local_dboard_get_user_role_ids($contextid=null) {
 /**
  * Get access rolesfor dashboard user.
  *
- * @param int $dashboardid.
- *
+ * @param int $dashboardid *
  * @return string string of role names.
  *
  */
@@ -140,9 +139,9 @@ function local_dboard_get_access_roles($dashboardid) {
     global $DB;
     $roles      = $DB->get_records('local_dboard_right', array('objectid' => $dashboardid, 'objecttype' => 'dashboard'));
     $roleids    = array_column($roles, 'roleid');
-    $rolenames = $DB->get_records_list('role', 'id', $roleids, $sort = '', $fields = 'shortname');
-    return implode(', ', array_column($rolenames, 'shortname'));
-
+    $result = $DB->get_records_list('role', 'id', $roleids, $sort = '', $fields = 'shortname');
+    $rolenames = implode(', ', array_column($result, 'shortname'));
+    return $rolenames;
 }
 
 /**
