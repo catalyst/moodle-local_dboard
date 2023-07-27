@@ -29,7 +29,7 @@ require_once(__DIR__ . '/locallib.php');
 /**
  * Get status checks for tool_objectfs.
  *
- * @param global_navigation $nav
+ * @param global_navigation $nav navigation
  */
 function local_dboard_extend_navigation(global_navigation $nav) {
     global $CFG, $PAGE, $USER, $DB;
