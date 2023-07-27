@@ -132,7 +132,9 @@ function local_dboard_get_user_role_ids($contextid=null) {
  * Get access rolesfor dashboard user.
  *
  * @param int $dashboardid.
- * @return array An array of role names.
+ *
+ * @return string string of role names.
+ *
  */
 function local_dboard_get_access_roles($dashboardid) {
     global $DB;

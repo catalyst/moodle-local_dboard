@@ -25,8 +25,6 @@
 
 namespace local_dboard\event;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * The dashboard deleted event class.
  *
