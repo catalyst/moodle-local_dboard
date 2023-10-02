@@ -111,7 +111,6 @@ if ($PAGE->context->contextlevel == CONTEXT_USER) {
 }
 $PAGE->set_heading($header);
 $PAGE->requires->css(new \moodle_url('/local/dboard/styles.css'));
-$PAGE->navbar->add($dashboard);
 
 // Allow to configure a dashboard on a system context level only.
 if (!isset($systemcontextid)) {
