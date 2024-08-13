@@ -178,6 +178,9 @@ if (!empty($dashboardsettings->layout)) {
 
 // Trigger event, dboard dashboard viewed.
 $eventparams = array('context' => $PAGE->context, 'objectid' => $id);
+if (!empty($coursecontext)) {
+    $eventparams = array('context' => $coursecontext, 'objectid' => $id);
+}
 $event = dboard_viewed::create($eventparams);
 $event->trigger();
 
