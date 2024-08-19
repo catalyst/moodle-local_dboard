@@ -46,5 +46,5 @@ function xmldb_local_dboard_upgrade($oldversion) {
         // Plugin dboard savepoint reached.
         upgrade_plugin_savepoint(true, 2021102100, 'local', 'dboard');
     }
-
+    return true;
 }
